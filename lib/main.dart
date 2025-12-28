@@ -1,25 +1,35 @@
 import 'package:flutter/material.dart';
-import 'yapilandirma/tema.dart'; // Tema dosyamız
-import 'ekranlar/acilis/splash_screen.dart'; // Yeni başlangıç noktamız
+import 'package:firebase_core/firebase_core.dart'; // Firebase Çekirdeği
+import 'package:hangisi_app/ekranlar/acilis/splash_screen.dart';
+import 'firebase_options.dart'; // Az önce terminalin oluşturduğu dosya
+import 'ekranlar/acilis/splash_screen.dart'; // Karşılama Ekranımız
 
 void main() async {
+  // Motoru Hazırla
   WidgetsFlutterBinding.ensureInitialized();
-  // await Firebase.initializeApp(); // Firebase'i sonra açacağız
-  runApp(const HangisiApp());
+  
+  // Firebase'i Başlat (Android ve iOS ayarlarını otomatik alarak)
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  runApp(const MyApp());
 }
 
-class HangisiApp extends StatelessWidget {
-  const HangisiApp({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'HangisiApp',
-      debugShowCheckedModeBanner: false, // Sağ üstteki 'Debug' yazısını kaldırır
-      theme: UygulamaTemasi.temaGetir(), // Renk paletimizi uygular
-      
-      // İŞTE BURASI DEĞİŞTİ:
-      // Uygulama ilk açıldığında Karşılama Ekranı (İnekli ekran) gelecek.
+      title: 'Hangisi?',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
+        useMaterial3: true,
+        fontFamily: 'Inter', // Projende tanımlı font
+      ),
+      // Uygulama Karşılama Ekranı ile başlar
       home: const SplashScreen(),
     );
   }

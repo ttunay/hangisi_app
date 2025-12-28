@@ -104,7 +104,7 @@ class _DogrulamaEkraniState extends State<DogrulamaEkrani> {
                 child: RotatedBox(
                   quarterTurns: isLandscape ? 3 : 0,
                   child: Image.asset(
-                    'assets/giris_bg.png',
+                    'assets/inekler.png',
                     fit: BoxFit.cover,
                     errorBuilder: (context, error, stackTrace) => const SizedBox(),
                   ),
