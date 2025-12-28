@@ -109,7 +109,7 @@ class _KayitEkraniState extends State<KayitEkrani> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
-        backgroundColor: const Color(0xFFE7E9E8),
+        backgroundColor: Color(0xFFE7E9E8),
         resizeToAvoidBottomInset: true,
         body: Stack(
           children: [

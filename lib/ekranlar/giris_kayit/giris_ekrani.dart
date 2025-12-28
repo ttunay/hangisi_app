@@ -50,7 +50,7 @@ class _GirisEkraniState extends State<GirisEkrani> {
           if (rol == 'Uretici') {
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => const UreticiAnaEkran()),
+              MaterialPageRoute(builder: (context) => const AnaEkran()),
             );
           } else if (rol == 'Tuketici') {
             Navigator.pushReplacement(
@@ -101,7 +101,7 @@ class _GirisEkraniState extends State<GirisEkrani> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
-        backgroundColor: const Color(0xFFE7E9E8),
+        backgroundColor: Colors.white,
         resizeToAvoidBottomInset: true,
         body: Stack(
           children: [

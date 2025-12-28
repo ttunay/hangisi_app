@@ -35,8 +35,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
     return Scaffold(
       // --- ARKA PLAN RENGİ (Temadaki Gri) ---
-      backgroundColor: const Color(0xFFE7E9E8), 
-      
+      backgroundColor: Color(0xFFE7E9E8),
       body: OrientationBuilder(
         builder: (context, orientation) {
           final bool isLandscape = orientation == Orientation.landscape;
