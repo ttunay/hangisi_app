@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import '../../servisler/auth_servisi.dart';
 import '../giris_kayit/giris_ekrani.dart';
 
-class UreticiAnaEkran extends StatelessWidget {
-  const UreticiAnaEkran({super.key});
+class TuketiciAnaEkran extends StatelessWidget {
+  const TuketiciAnaEkran({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -12,8 +12,8 @@ class UreticiAnaEkran extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color(0xFFE7E9E8),
       appBar: AppBar(
-        title: const Text("Üretici Paneli", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-        backgroundColor: const Color(0xFF2E7D32), // Yeşil AppBar
+        title: const Text("Tüketici Paneli", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+        backgroundColor: const Color(0xFFD32F2F), // Kırmızı AppBar
         actions: [
           IconButton(
             icon: const Icon(Icons.logout, color: Colors.white),
@@ -25,14 +25,14 @@ class UreticiAnaEkran extends StatelessWidget {
         ],
       ),
       body: const Center(
-        child: Text("Üretici Ana Sayfası Şimdilik Boş", style: TextStyle(fontSize: 18, color: Colors.black54)),
+        child: Text("Tüketici Ana Sayfası Şimdilik Boş", style: TextStyle(fontSize: 18, color: Colors.black54)),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: const Color(0xFF2E7D32), // Yeşil Bottom Bar
+        backgroundColor: const Color(0xFFD32F2F), // Kırmızı Bottom Bar
         selectedItemColor: Colors.white,
         unselectedItemColor: Colors.white60,
         items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Ana Sayfa"),
+          BottomNavigationBarItem(icon: Icon(Icons.shopping_cart), label: "Market"),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profil"),
         ],
       ),
