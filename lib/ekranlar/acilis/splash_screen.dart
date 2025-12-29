@@ -13,88 +13,69 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    // 3 Saniye bekle ve Giriş Ekranına geç
+    // 3 saniye sonra Giriş Ekranına temiz geçiş
     Timer(const Duration(seconds: 3), () {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const GirisEkrani()),
-      );
+      if (mounted) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (_) => const GirisEkrani()),
+        );
+      }
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    // Ekran boyutlarını al
-    final size = MediaQuery.of(context).size;
-    
-    // RESPONSIVE ÖLÇÜ BİRİMİ (Kısa Kenar)
-    final double responsiveBirim = size.shortestSide;
-    
-    // LOGO BOYUTU (%60)
-    final double logoBoyutu = responsiveBirim * 0.60;
+    // Responsive birim: Ekranın kısa kenarı (Dikeyde genişlik, Yatayda yükseklik)
+    final double birim = MediaQuery.of(context).size.shortestSide;
+    final bool isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
 
     return Scaffold(
-      // --- ARKA PLAN RENGİ (Temadaki Gri) ---
-      backgroundColor: Color(0xFFE7E9E8),
-      body: OrientationBuilder(
-        builder: (context, orientation) {
-          final bool isLandscape = orientation == Orientation.landscape;
+      backgroundColor: Colors.white,
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          // 1. KATMAN: Arka Plan (Yatay modda dönen)
+          RotatedBox(
+            quarterTurns: isLandscape ? 3 : 0,
+            child: Image.asset(
+              'assets/splash_arkaplan.png',
+              fit: BoxFit.cover,
+              errorBuilder: (_, __, ___) => const SizedBox(),
+            ),
+          ),
 
-          return Stack(
-            fit: StackFit.expand,
-            children: [
-              // 1. KATMAN: ARKA PLAN RESMİ (DÖNEN)
-              Positioned.fill(
-                child: RotatedBox(
-                  quarterTurns: isLandscape ? 3 : 0, 
-                  child: Image.asset(
-                    'assets/splash_arkaplan.png',
-                    fit: BoxFit.cover, 
-                    errorBuilder: (context, error, stackTrace) => const SizedBox(),
+          // 2. KATMAN: Logo ve Yazı (Merkezde)
+          Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Logo
+                Image.asset(
+                  'assets/logo.png',
+                  width: birim * 0.63,
+                  height: birim * 0.63,
+                  fit: BoxFit.contain,
+                ),
+                
+                SizedBox(height: birim * 0.005),
+
+                // Yazı
+                Text(
+                  "hangisi",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: birim * 0.10,
+                    fontWeight: FontWeight.w900,
+                    color: const Color(0xFF1E201C),
+                    letterSpacing: -1.0,
+                    height: 0.8,
                   ),
                 ),
-              ),
-
-              // 2. KATMAN: LOGO + YAZI
-              Center(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    // --- LOGO ---
-                    SizedBox(
-                      width: logoBoyutu,
-                      height: logoBoyutu,
-                      child: Image.asset(
-                        'assets/logo.png',
-                        fit: BoxFit.contain,
-                      ),
-                    ),
-
-                    // --- ARADAKİ BOŞLUK ---
-                    SizedBox(height: responsiveBirim * 0.005),
-
-                    // --- YAZI ---
-                    Text(
-                      "hangisi",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontFamily: 'Inter',
-                        fontSize: responsiveBirim * 0.10,
-                        fontWeight: FontWeight.w900,
-                        // --- YAZI RENGİ (Temadaki Siyah) ---
-                        // Projede butonlarda kullandığımız siyah tonu
-                        color: const Color(0xFF1E201C), 
-                        letterSpacing: -1.0,
-                        height: 0.8, 
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          );
-        },
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
