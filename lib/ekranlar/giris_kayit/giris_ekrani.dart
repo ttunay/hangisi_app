@@ -238,8 +238,8 @@ class _GirisEkraniState extends State<GirisEkrani> {
                                 // Blur Efekti
                                 Positioned.fill(
                                   child: BackdropFilter(
-                                    filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                                    child: Container(color: Colors.transparent),
+                                    filter: ImageFilter.blur(sigmaX: 10, sigmaY:10),
+                                    child: Container(color: const Color.fromARGB(0, 255, 255, 255)),
                                   ),
                                 ),
                                 // İçerik Kartı

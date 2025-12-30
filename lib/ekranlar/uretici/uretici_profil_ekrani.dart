@@ -67,8 +67,8 @@ class _UreticiProfilEkraniState extends State<UreticiProfilEkrani> {
       backgroundColor: Colors.transparent,
       builder: (context) => DraggableScrollableSheet(
         initialChildSize: 0.60,
-        minChildSize: 0.4,
-        maxChildSize: 0.95,
+        minChildSize: 0.55,
+        maxChildSize: 0.60,
         expand: false,
         builder: (context, scrollController) {
           return Container(
@@ -271,22 +271,20 @@ class _UreticiProfilEkraniState extends State<UreticiProfilEkrani> {
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 12, vertical: 6),
                                   decoration: BoxDecoration(
-                                      color: const Color.fromARGB(
-                                              255, 30, 77, 24)
-                                          .withOpacity(0.1),
+                                      color: Colors.deepOrange.withOpacity(0.2),
                                       borderRadius: BorderRadius.circular(20)),
                                   child: Row(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       const Icon(Icons.location_on,
-                                          size: 14, color: Color(0xFF2D5A27)),
+                                          size: 14, color: Colors.deepOrangeAccent),
                                       const SizedBox(width: 4),
                                       Flexible(
                                           child: Text(konum,
                                               style: const TextStyle(
                                                   fontSize: 13,
                                                   fontWeight: FontWeight.bold,
-                                                  color: Color(0xFF2D5A27)),
+                                                  color: Colors.deepOrangeAccent),
                                               overflow: TextOverflow.ellipsis)),
                                     ],
                                   ),
@@ -300,39 +298,42 @@ class _UreticiProfilEkraniState extends State<UreticiProfilEkrani> {
                                 const SizedBox(height: 5),
                                 Text(hakkimda,
                                     style: TextStyle(
+                                        fontSize: 16,
                                         color: Colors.grey.shade600,
                                         height: 1.5),
                                     textAlign: TextAlign.left),
                                 const SizedBox(height: 25),
                                 Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: [
-                                    // SADECE BU KISIM DEĞİŞTİ: Ürün sayısını veritabanından çekiyor
-                                    StreamBuilder<QuerySnapshot>(
-                                      stream: FirebaseFirestore.instance
-                                          .collection('urunler')
-                                          .where('ureticiId',
-                                              isEqualTo: user?.uid)
-                                          .snapshots(),
-                                      builder: (context, snapshot) {
-                                        String urunSayisi = "0";
-                                        if (snapshot.hasData) {
-                                          urunSayisi = snapshot.data!.docs.length.toString();
-                                        }
-                                        return _buildStatItem("Ürünler", urunSayisi);
-                                      },
-                                    ),
-                                    _buildStatItem("Takipçi", "1.2k"),
-                                    _buildStatItem("Puan", "4.8"),
-                                  ],
-                                ),
+  mainAxisAlignment: MainAxisAlignment.spaceAround,
+  children: [
+    // 1. ÜRÜN SAYISI (Veritabanından canlı çeker)
+    StreamBuilder<QuerySnapshot>(
+      stream: FirebaseFirestore.instance
+          .collection('urunler')
+          .where('ureticiId', isEqualTo: user?.uid)
+          .snapshots(),
+      builder: (context, snapshot) {
+        String urunSayisi = "0";
+        if (snapshot.hasData) {
+          urunSayisi = snapshot.data!.docs.length.toString();
+        }
+        return _buildStatItem("Ürünler", urunSayisi);
+      },
+    ),
+
+    // 2. TAKİPÇİ (Şimdilik sabit)
+    _buildStatItem("Takipçi", "1.2k"),
+
+    // 3. PUAN (Şimdilik sabit)
+    _buildStatItem("Puan", "4.8"),
+  ],
+),
                                 const SizedBox(height: 25),
 
                                 // --- ÜRÜNLER LİSTESİ ---
                                 Text("Ürünlerim",
                                     style: TextStyle(
-                                        fontSize: 18,
+                                        fontSize: 20,
                                         fontWeight: FontWeight.bold,
                                         color: Colors.grey.shade800)),
                                 const SizedBox(height: 15),

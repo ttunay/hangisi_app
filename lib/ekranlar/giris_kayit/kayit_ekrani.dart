@@ -114,16 +114,16 @@ class _KayitEkraniState extends State<KayitEkrani> {
         child: Container(
           padding: EdgeInsets.all(birim * 0.04),
           decoration: BoxDecoration(
-            color: isSelected ? Colors.blue.withAlpha(30) : Colors.white.withAlpha(128),
+            color: isSelected ? Colors.deepOrangeAccent.withAlpha(60) : Colors.white.withAlpha(128),
             borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: isSelected ? Colors.blue.withAlpha(30) : Colors.white.withAlpha(150), width: isSelected ? 3 : 1.5),
+            border: Border.all(color: isSelected ? Colors.deepOrangeAccent.withAlpha(60) : Colors.white.withAlpha(150), width: isSelected ? 3 : 1.5),
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Image.asset(gorselYolu, width: birim * 0.20, height: birim * 0.20, fit: BoxFit.contain),
               SizedBox(height: birim * 0.03),
-              Text(rolAdi, style: TextStyle(fontFamily: 'Inter', fontSize: birim * 0.045, fontWeight: isSelected ? FontWeight.bold : FontWeight.normal, color: isSelected ? Colors.blue.withAlpha(150) : Colors.black87)),
+              Text(rolAdi, style: TextStyle(fontFamily: 'Inter', fontSize: birim * 0.045, fontWeight: isSelected ? FontWeight.bold : FontWeight.normal, color: isSelected ? Colors.deepOrangeAccent.withAlpha(200) : Colors.black87)),
             ],
           ),
         ),

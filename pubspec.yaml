@@ -5,7 +5,7 @@ publish_to: 'none'
 version: 1.0.0+1
 
 environment:
-  sdk: ^3.9.2
+  sdk: ^3.5.0  # 3.9.2 henüz çıkmadı, stabil sürüm yapıldı (değiştirebilirsiniz)
 
 dependencies:
   flutter:
@@ -14,11 +14,13 @@ dependencies:
   google_fonts: ^6.1.0
   provider: ^6.1.1
 
-  # Birbiriyle uyumlu test edilmiş Firebase sürümleri:
+  # Firebase paketleri
   firebase_core: ^3.10.1
-  firebase_auth: ^5.7.0     # Çakışmayı gidermek için bu sürüme çekildi
+  firebase_auth: ^5.7.0
   cloud_firestore: ^5.6.1
   firebase_storage: ^12.4.10
+  
+  # Diğer özellikler
   mobile_scanner: ^5.1.1
   image_picker: ^1.0.7
 
@@ -31,10 +33,6 @@ dev_dependencies:
 flutter:
   uses-material-design: true
 
+  # Sadece klasör adını yazmak yeterlidir, içindekileri otomatik görür.
   assets:
     - assets/
-    - assets/inekler.png
-    - assets/logo.png
-    - assets/splash_arkaplan.png
-    - assets/tuketici.png
-    - assets/uretici.png

@@ -26,7 +26,7 @@ class _UrunlerEkraniState extends State<UrunlerEkrani> {
   Widget _buildBackground() {
     return Stack(
       children: [
-        Container(color: Color.fromARGB(255, 228, 242, 247)), //ZEMİN RENGİ
+        Container(color: const Color.fromARGB(255, 228, 242, 247)), //ZEMİN RENGİ
         Positioned.fill(
           child: Image.asset(
             'assets/inekler.png',
@@ -50,8 +50,8 @@ class _UrunlerEkraniState extends State<UrunlerEkrani> {
         borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
       ),
       builder: (context) => DraggableScrollableSheet(
-        initialChildSize: 0.7,
-        maxChildSize: 0.9,
+        initialChildSize: 0.80,
+        maxChildSize: 0.95,
         expand: false,
         builder: (context, scrollController) => SingleChildScrollView(
           controller: scrollController,
@@ -218,7 +218,7 @@ class _UrunlerEkraniState extends State<UrunlerEkrani> {
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF1E201C),
-                  minimumSize: const Size(double.infinity, 60),
+                  minimumSize: const Size(60, 60),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30))),
               onPressed: () async {
@@ -288,12 +288,11 @@ class _UrunlerEkraniState extends State<UrunlerEkrani> {
                   : "Üretici";
 
               return SafeArea(
-                // CustomScrollView yerine Column kullanıldı (Sabit Başlık Efekti için)
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // --- ÜST KISIM (Sabit) ---
-                    // Merhaba ve İsim Alanı
+                    // Sadece Merhaba ve İsim Alanı burada kaldı
                     Padding(
                       padding: EdgeInsets.fromLTRB(
                           birim * 0.06, birim * 0.06, birim * 0.06, 0),
@@ -314,42 +313,8 @@ class _UrunlerEkraniState extends State<UrunlerEkrani> {
                       ),
                     ),
 
-                    // Arama Kutusu
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: birim * 0.06, vertical: birim * 0.04),
-                      child: Container(
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(20),
-                            boxShadow: [
-                              BoxShadow(
-                                  color: Colors.black.withOpacity(0.05),
-                                  blurRadius: 10)
-                            ]),
-                        child: TextField(
-                            onChanged: (val) => setState(
-                                () => _aramaKelimesi = val.toLowerCase()),
-                            decoration: const InputDecoration(
-                                hintText: "Ürünlerinizi arayın...",
-                                prefixIcon: Icon(Icons.search),
-                                border: InputBorder.none,
-                                contentPadding:
-                                    EdgeInsets.symmetric(vertical: 15))),
-                      ),
-                    ),
-
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: birim * 0.06, vertical: birim * 0.02),
-                      child: Text("Ürünlerim",
-                          style: TextStyle(
-                              fontSize: birim * 0.055,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black87)),
-                    ),
-
                     // --- LİSTE KISMI (Kaydırılabilir - Expanded İçinde) ---
+                    // Arama Kutusu ve Liste bu bloğun içine alındı
                     Expanded(
                       child: StreamBuilder<QuerySnapshot>(
                         stream: FirebaseFirestore.instance
@@ -372,25 +337,63 @@ class _UrunlerEkraniState extends State<UrunlerEkrani> {
                                   .contains(_aramaKelimesi))
                               .toList();
 
-                          if (urunlerDocs.isEmpty) {
-                            return Center(
-                              child: Text("Henüz ürün yok.",
-                                  style: TextStyle(
-                                      color: Colors.black54,
-                                      fontSize: birim * 0.04)),
-                            );
-                          }
-
-                          return ListView.builder(
+                          return ListView(
                             padding: EdgeInsets.fromLTRB(
                                 birim * 0.06, 0, birim * 0.06, 100),
-                            itemCount: urunlerDocs.length,
-                            itemBuilder: (context, index) {
-                              var urun = urunlerDocs[index].data()
-                                  as Map<String, dynamic>;
-                              return _buildUrunKarti(
-                                  urunlerDocs[index].id, urun, index, birim);
-                            },
+                            children: [
+                              // Arama Kutusu (Artık listenin en başında)
+                              Padding(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: birim * 0.04),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(20),
+                                      boxShadow: [
+                                        BoxShadow(
+                                            color: Colors.black.withOpacity(0.05),
+                                            blurRadius: 5)
+                                      ]),
+                                  child: TextField(
+                                      onChanged: (val) => setState(
+                                          () => _aramaKelimesi = val.toLowerCase()),
+                                      decoration: const InputDecoration(
+                                          hintText: "Ürünlerinizi arayın...",
+                                          prefixIcon: Icon(Icons.search),
+                                          border: InputBorder.none,
+                                          contentPadding:
+                                              EdgeInsets.symmetric(vertical: 15))),
+                                ),
+                              ),
+
+                              Padding(
+                                padding: EdgeInsets.only(bottom: birim * 0.02),
+                                child: Text("Ürünlerim",
+                                    style: TextStyle(
+                                        fontSize: birim * 0.055,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black87)),
+                              ),
+
+                              if (urunlerDocs.isEmpty)
+                                Center(
+                                  child: Padding(
+                                    padding: EdgeInsets.only(top: birim * 0.1),
+                                    child: Text("Henüz ürün yok.",
+                                        style: TextStyle(
+                                            color: Colors.black54,
+                                            fontSize: birim * 0.04)),
+                                  ),
+                                )
+                              else
+                                ...urunlerDocs.asMap().entries.map((entry) {
+                                  int index = entry.key;
+                                  var doc = entry.value;
+                                  var urun = doc.data() as Map<String, dynamic>;
+                                  return _buildUrunKarti(
+                                      doc.id, urun, index, birim);
+                                }).toList(),
+                            ],
                           );
                         },
                       ),
@@ -450,7 +453,21 @@ class _UrunlerEkraniState extends State<UrunlerEkrani> {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  SizedBox(height: birim * 0.001),
+                  
+                  // --- BARKOD ---
+                  SizedBox(height: birim * 0.005),
+                  Text(
+                    "Barkod: ${urun['barkod'] ?? '-'}",
+                    style: TextStyle(
+                      color: Colors.grey.shade600,
+                      fontSize: birim * 0.035,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  // --------------
+                  
+                  SizedBox(height: birim * 0.01),
+                  
                   Text(urun['aciklama'] ?? "",
                       style: TextStyle(
                           color: const Color.fromARGB(255, 43, 43, 43),
@@ -458,18 +475,6 @@ class _UrunlerEkraniState extends State<UrunlerEkrani> {
                           height: 1.2),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis),
-                  SizedBox(height: birim * 0.02),
-                  Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 8, vertical: 3),
-                      decoration: BoxDecoration(
-                          color: kartRengi.withOpacity(0.15),
-                          borderRadius: BorderRadius.circular(8)),
-                      child: Text("Barkod: ${urun['barkod'] ?? '-'}",
-                          style: TextStyle(
-                              fontSize: birim * 0.030,
-                              fontWeight: FontWeight.bold,
-                              color: kartRengi)))
                 ])),
           ],
         ),

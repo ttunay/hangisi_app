@@ -63,9 +63,9 @@ class _TuketiciProfilEkraniState extends State<TuketiciProfilEkrani> {
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       builder: (context) => DraggableScrollableSheet(
-        initialChildSize: 0.55,
-        minChildSize: 0.4,
-        maxChildSize: 0.95,
+        initialChildSize: 0.50,
+        minChildSize: 0.45,
+        maxChildSize: 0.50,
         expand: false,
         builder: (context, scrollController) {
           return Container(
@@ -200,8 +200,9 @@ class _TuketiciProfilEkraniState extends State<TuketiciProfilEkrani> {
                 .doc(user?.uid)
                 .snapshots(),
             builder: (context, snapshot) {
-              if (!snapshot.hasData)
+              if (!snapshot.hasData) {
                 return const Center(child: CircularProgressIndicator());
+              }
 
               var data = snapshot.data!.data() as Map<String, dynamic>?;
               String adSoyad = data?['adSoyad'] ?? "İsimsiz Kullanıcı";
@@ -212,12 +213,15 @@ class _TuketiciProfilEkraniState extends State<TuketiciProfilEkrani> {
               // Favori listesini burada çekiyoruz
               List favoriler = data?['favoriler'] ?? [];
 
-              if (_adSoyadController.text.isEmpty)
+              if (_adSoyadController.text.isEmpty) {
                 _adSoyadController.text = adSoyad;
-              if (_hakkimdaController.text.isEmpty)
+              }
+              if (_hakkimdaController.text.isEmpty) {
                 _hakkimdaController.text = hakkimda;
-              if (_konumController.text.isEmpty)
+              }
+              if (_konumController.text.isEmpty) {
                 _konumController.text = konum;
+              }
 
               return ScrollConfiguration(
                 behavior: ScrollConfiguration.of(context).copyWith(
@@ -278,7 +282,7 @@ class _TuketiciProfilEkraniState extends State<TuketiciProfilEkrani> {
                                         horizontal: 12, vertical: 6),
                                     decoration: BoxDecoration(
                                       color:
-                                          Colors.deepOrange.withOpacity(0.3),
+                                          Colors.deepOrange.withOpacity(0.2),
                                       borderRadius: BorderRadius.circular(20),
                                     ),
                                     child: Row(
@@ -286,15 +290,16 @@ class _TuketiciProfilEkraniState extends State<TuketiciProfilEkrani> {
                                       children: [
                                         const Icon(Icons.location_on,
                                             size: 14,
-                                            color: Colors.deepOrange),
-                                        const SizedBox(width: 2),
+                                            color: Colors.deepOrangeAccent),
+                                        const SizedBox(width: 4),
                                         Flexible(
                                           child: Text(
                                             konum,
                                             style: const TextStyle(
-                                                fontSize: 13,
+                                                fontSize: 14,
                                                 fontWeight: FontWeight.bold,
-                                                color: Colors.deepOrange),
+                                                color:
+                                                    Colors.deepOrangeAccent),
                                             overflow: TextOverflow.ellipsis,
                                           ),
                                         ),
@@ -306,7 +311,7 @@ class _TuketiciProfilEkraniState extends State<TuketiciProfilEkrani> {
                                       style: TextStyle(
                                           fontSize: 20,
                                           fontWeight: FontWeight.bold,
-                                          color: Colors.grey.shade900)),
+                                          color: Colors.grey.shade800)),
                                   const SizedBox(height: 5),
                                   Text(hakkimda,
                                       style: TextStyle(
@@ -314,29 +319,30 @@ class _TuketiciProfilEkraniState extends State<TuketiciProfilEkrani> {
                                           height: 1.5),
                                       textAlign: TextAlign.left),
                                   const SizedBox(height: 25),
-                                  
-                                  // --- GÜNCELLENEN İSTATİSTİK KISMI ---
+
+                                  // --- İSTATİSTİK KISMI ---
                                   Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceAround,
                                     children: [
-                                      // Burayı güncelledik: Gerçek liste uzunluğunu gösteriyor
                                       _buildStatItem("Favoriler",
                                           "${favoriler.length}"),
                                       _buildStatItem("Takip", "124"),
                                       _buildStatItem("Puan", "4.8"),
                                     ],
                                   ),
-                                  
+
                                   const SizedBox(height: 25),
                                   Text("Favorilerim",
                                       style: TextStyle(
                                           fontSize: 18,
                                           fontWeight: FontWeight.bold,
-                                          color: Colors.grey.shade900)),
+                                          color: Colors.grey.shade800)),
                                   const SizedBox(height: 15),
+
+                                  // --- ÜRÜN LİSTESİ ---
                                   SizedBox(
-                                    height: 200,
+                                    height: birim * 0.45,
                                     child: ScrollConfiguration(
                                       behavior: ScrollConfiguration.of(context)
                                           .copyWith(
@@ -350,10 +356,11 @@ class _TuketiciProfilEkraniState extends State<TuketiciProfilEkrani> {
                                             .collection('urunler')
                                             .snapshots(),
                                         builder: (context, urunSnapshot) {
-                                          if (!urunSnapshot.hasData)
+                                          if (!urunSnapshot.hasData) {
                                             return const Center(
                                                 child:
                                                     CircularProgressIndicator());
+                                          }
 
                                           var favoriUrunler = urunSnapshot
                                               .data!.docs
@@ -389,6 +396,7 @@ class _TuketiciProfilEkraniState extends State<TuketiciProfilEkrani> {
                                       ),
                                     ),
                                   ),
+                                  const SizedBox(height: 50),
                                 ],
                               ),
                             ),
@@ -481,17 +489,7 @@ class _TuketiciProfilEkraniState extends State<TuketiciProfilEkrani> {
 
     return Container(
       width: birim * 0.28,
-      margin: const EdgeInsets.only(right: 15, bottom: 10, top: 5),
-      decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(25),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.05),
-              blurRadius: 15,
-              offset: const Offset(0, 4),
-            )
-          ]),
+      margin: const EdgeInsets.only(right: 15),
       child: Column(
         children: [
           AspectRatio(
@@ -499,7 +497,7 @@ class _TuketiciProfilEkraniState extends State<TuketiciProfilEkrani> {
             child: Container(
               decoration: BoxDecoration(
                   color: kartRengi,
-                  borderRadius: BorderRadius.circular(20)),
+                  borderRadius: BorderRadius.circular(25)),
               child: Icon(Icons.eco,
                   color: Colors.black.withOpacity(0.1), size: birim * 0.15),
             ),

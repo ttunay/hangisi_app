@@ -75,7 +75,6 @@ class _UrunEkleEkraniState extends State<UrunEkleEkrani> {
           const SnackBar(content: Text("Ürün başarıyla kaydedildi!")),
         );
 
-        // Klavye açıksa kapat
         FocusScope.of(context).unfocus();
       }
     } catch (e) {
@@ -88,14 +87,10 @@ class _UrunEkleEkraniState extends State<UrunEkleEkrani> {
     }
   }
 
-  // --- ARKA PLAN KATMANLARI ---
   Widget _buildBackground() {
     return Stack(
       children: [
-        // 1. Gri Zemin
-        Container(color: Color.fromARGB(255, 228, 242, 247)), //ZEMİN RENGİ
-
-        // 2. İnekler Resmi
+        Container(color: const Color.fromARGB(255, 228, 242, 247)),
         Positioned.fill(
           child: Image.asset(
             'assets/inekler.png',
@@ -109,24 +104,16 @@ class _UrunEkleEkraniState extends State<UrunEkleEkrani> {
 
   @override
   Widget build(BuildContext context) {
-    // Ekranın kısa kenarını referans al (Yatay/Dikey uyumu için)
     final double birim = MediaQuery.of(context).size.shortestSide;
 
     return GestureDetector(
-      onTap: () => FocusScope.of(context)
-          .unfocus(), // Boşluğa tıklayınca klavye kapanır
+      onTap: () => FocusScope.of(context).unfocus(),
       child: Stack(
         children: [
-          // Katman 1-2-3: Arka Plan
           _buildBackground(),
-
-          // Katman 4: İçerik
           Scaffold(
-            backgroundColor:
-                Colors.transparent, // Arka planı görmek için şeffaf
-            resizeToAvoidBottomInset:
-                true, // Klavye açılınca yukarı kayması için
-
+            backgroundColor: Colors.transparent,
+            resizeToAvoidBottomInset: true,
             body: StreamBuilder<DocumentSnapshot>(
               stream: FirebaseFirestore.instance
                   .collection('kullanicilar')
@@ -143,7 +130,6 @@ class _UrunEkleEkraniState extends State<UrunEkleEkrani> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // --- SABİT KISIM (Header) ---
                       Padding(
                         padding: EdgeInsets.fromLTRB(
                             birim * 0.06, birim * 0.06, birim * 0.06, 0),
@@ -169,48 +155,68 @@ class _UrunEkleEkraniState extends State<UrunEkleEkrani> {
                         child: SingleChildScrollView(
                           physics: const AlwaysScrollableScrollPhysics(),
                           padding: EdgeInsets.symmetric(
-                              horizontal: birim * 0.06, vertical: birim * 0.06),
+                              horizontal: birim * 0.06, vertical: birim * 0.04),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              SizedBox(height: birim * 0.02),
+                              
+                              // --- TEK BÜYÜK KUTU (FORM KARTI) ---
+                              Container(
+                                padding: EdgeInsets.all(birim * 0.05),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(20),
+                                  boxShadow: [
+                                    BoxShadow(
+                                        color: Colors.black.withOpacity(0.05),
+                                        blurRadius: 10,
+                                        offset: const Offset(0, 4))
+                                  ],
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start, // Yazıyı sola yasla
+                                  children: [
+                                    // --- BAŞLIK BURAYA TAŞINDI ---
+                                    Text("Yeni Ürün Ekle",
+                                        style: TextStyle(
+                                            fontSize: birim * 0.060,
+                                            fontWeight: FontWeight.bold,
+                                            color: const Color(0xFF1E201C))),
+                                    SizedBox(height: birim * 0.04), 
+                                    // -----------------------------
 
-                              Text("Yeni Ürün Ekle",
-                                  style: TextStyle(
-                                      fontSize: birim * 0.060,
-                                      fontWeight: FontWeight.bold,
-                                      color: const Color(0xFF1E201C))),
+                                    _inputAlan(_adController, "Ürün Adı",
+                                        Icons.shopping_bag_outlined, birim),
+                                    SizedBox(height: birim * 0.04),
+                                    _inputAlan(_barkodController, "Barkod (Örnek: DOM-01)",
+                                        Icons.qr_code_scanner, birim),
+                                    SizedBox(height: birim * 0.04),
+                                    _inputAlan(_tohumController, "Tohum Bilgisi",
+                                        Icons.grass, birim),
+                                    SizedBox(height: birim * 0.04),
+                                    _inputAlan(_gubreController, "Gübre Bilgisi ",
+                                        Icons.opacity, birim),
+                                    SizedBox(height: birim * 0.04),
+                                    _inputAlan(_ilacController, "İlaçlama Bilgisi",
+                                        Icons.sanitizer, birim),
+                                    SizedBox(height: birim * 0.04),
+                                    _inputAlan(_aciklamaController, "Açıklama",
+                                        Icons.description, birim,
+                                        maxLines: 3),
+                                  ],
+                                ),
+                              ),
+                              // -----------------------------------
 
-                              SizedBox(height: birim * 0.04),
-
-                              // Form Alanları (Dynamic Spacing)
-                              _inputAlan(_adController, "Ürün Adı",
-                                  Icons.shopping_bag_outlined, birim),
-                              SizedBox(height: birim * 0.04),
-                              _inputAlan(_barkodController, "Barkod (Örn: DOM-01)",
-                                  Icons.qr_code_scanner, birim),
-                              SizedBox(height: birim * 0.04),
-                              _inputAlan(_tohumController, "Kullanılan Tohum",
-                                  Icons.grass, birim),
-                              SizedBox(height: birim * 0.04),
-                              _inputAlan(_gubreController, "Kullanılan Gübre",
-                                  Icons.opacity, birim),
-                              SizedBox(height: birim * 0.04),
-                              _inputAlan(_ilacController, "İlaçlama Bilgisi",
-                                  Icons.sanitizer, birim),
-                              SizedBox(height: birim * 0.04),
-                              _inputAlan(_aciklamaController, "Ürün Açıklaması",
-                                  Icons.description, birim,
-                                  maxLines: 2),
-                              SizedBox(height: birim * 0.08),
+                              SizedBox(height: birim * 0.03),
 
                               // Kaydet Butonu
                               Center(
                                 child: ElevatedButton(
                                   style: ElevatedButton.styleFrom(
-                                    backgroundColor: Color(0xFF1E201C),
-                                    minimumSize: Size(birim * 0.35,
-                                        birim * 0.15), // Buton yüksekliği responsive
+                                    backgroundColor: const Color(0xFF1E201C),
+                                    minimumSize: Size(
+                                        birim * 0.35, birim * 0.15),
                                     shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(30)),
                                     elevation: 1,
@@ -225,7 +231,7 @@ class _UrunEkleEkraniState extends State<UrunEkleEkrani> {
                                               strokeWidth: 2))
                                       : Text("Ürünü Kaydet",
                                           style: TextStyle(
-                                              color: Color.fromARGB(
+                                              color: const Color.fromARGB(
                                                   255, 255, 255, 255),
                                               fontSize: birim * 0.040,
                                               fontWeight: FontWeight.bold)),
@@ -249,34 +255,33 @@ class _UrunEkleEkraniState extends State<UrunEkleEkrani> {
     );
   }
 
-  Widget _inputAlan(TextEditingController controller, String hint, IconData icon,
-      double birim,
+  // --- GÜNCELLENEN INPUT ALANI ---
+  Widget _inputAlan(TextEditingController controller, String label,
+      IconData icon, double birim,
       {int maxLines = 1}) {
-    return Container(
-      decoration: BoxDecoration(
-        // Arka planı hafif şeffaf beyaz yaptık ki glassmorphism ile uyumlu olsun
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-              color: Colors.black.withOpacity(0.10),
-              blurRadius: 10,
-              offset: const Offset(0, 4))
-        ],
-      ),
-      child: TextField(
-        controller: controller,
-        maxLines: maxLines,
-        style: TextStyle(fontSize: birim * 0.04, color: Colors.black87),
-        decoration: InputDecoration(
-          hintText: hint,
-          hintStyle: TextStyle(fontSize: birim * 0.04, color: Colors.black54),
-          prefixIcon: Icon(icon,
-              color: const Color.fromARGB(255, 0, 0, 0), size: birim * 0.06),
-          border: InputBorder.none,
-          contentPadding: EdgeInsets.symmetric(
-              horizontal: birim * 0.05, vertical: birim * 0.04),
+    return TextFormField(
+      controller: controller,
+      maxLines: maxLines,
+      style: TextStyle(fontSize: birim * 0.04, color: Colors.black87),
+      decoration: InputDecoration(
+        labelText: label,
+        labelStyle: TextStyle(
+            fontSize: birim * 0.04, color: Colors.grey.shade600),
+        prefixIcon: Icon(icon,
+            color: const Color(0xFF1E201C), size: birim * 0.06),
+        
+        // Çerçeve Ayarları
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(color: Colors.grey.shade300, width: 1),
         ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: Color(0xFF1E201C), width: 1.5),
+        ),
+        
+        contentPadding: EdgeInsets.symmetric(
+            horizontal: birim * 0.04, vertical: birim * 0.04),
       ),
     );
   }
