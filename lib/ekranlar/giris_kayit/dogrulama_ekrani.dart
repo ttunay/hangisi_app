@@ -71,7 +71,7 @@ class _DogrulamaEkraniState extends State<DogrulamaEkrani> {
     final double responsiveBirim = size.shortestSide;
 
     return Scaffold(
-      backgroundColor: Color(0xFFE7E9E8),
+      backgroundColor: Color.fromARGB(255, 228, 242, 247),
       body: Stack(
         children: [
           Positioned.fill(
@@ -128,7 +128,7 @@ class _DogrulamaEkraniState extends State<DogrulamaEkrani> {
                                 Icon(
                                   Icons.mark_email_unread_outlined,
                                   size: responsiveBirim * 0.22,
-                                  color: Colors.green.shade700,
+                                  color: Color.fromARGB(255, 0, 0, 0),
                                 ),
                                 SizedBox(height: responsiveBirim * 0.06),
                                 Text(

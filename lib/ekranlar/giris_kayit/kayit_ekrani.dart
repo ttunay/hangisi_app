@@ -114,16 +114,16 @@ class _KayitEkraniState extends State<KayitEkrani> {
         child: Container(
           padding: EdgeInsets.all(birim * 0.04),
           decoration: BoxDecoration(
-            color: isSelected ? Colors.green.withAlpha(30) : Colors.white.withAlpha(128),
+            color: isSelected ? Colors.blue.withAlpha(30) : Colors.white.withAlpha(128),
             borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: isSelected ? Colors.green : Colors.white.withAlpha(153), width: isSelected ? 3 : 1.5),
+            border: Border.all(color: isSelected ? Colors.blue.withAlpha(30) : Colors.white.withAlpha(150), width: isSelected ? 3 : 1.5),
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Image.asset(gorselYolu, width: birim * 0.20, height: birim * 0.20, fit: BoxFit.contain),
               SizedBox(height: birim * 0.03),
-              Text(rolAdi, style: TextStyle(fontFamily: 'Inter', fontSize: birim * 0.045, fontWeight: isSelected ? FontWeight.bold : FontWeight.normal, color: isSelected ? Colors.green : Colors.black87)),
+              Text(rolAdi, style: TextStyle(fontFamily: 'Inter', fontSize: birim * 0.045, fontWeight: isSelected ? FontWeight.bold : FontWeight.normal, color: isSelected ? Colors.blue.withAlpha(150) : Colors.black87)),
             ],
           ),
         ),
@@ -131,12 +131,12 @@ class _KayitEkraniState extends State<KayitEkrani> {
     );
   }
 
-  // 3. HEADER (Logo ve Giriş Yap Butonu)
+  // 3. HEADER (Marka ve Giriş Yap Butonu)
   Widget _buildHeader(BuildContext context, double birim) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text("hangisi", style: TextStyle(fontFamily: 'Inter', fontSize: birim * 0.045, color: Colors.black54, fontWeight: FontWeight.w500)),
+        Text("hangisi", style: TextStyle(fontFamily: 'Inter', fontSize: birim * 0.050, color: Colors.black54, fontWeight: FontWeight.w500)),
         TextButton(
           style: TextButton.styleFrom(padding: EdgeInsets.zero, minimumSize: Size.zero, tapTargetSize: MaterialTapTargetSize.shrinkWrap),
           onPressed: () => Navigator.pop(context),
@@ -152,7 +152,7 @@ class _KayitEkraniState extends State<KayitEkrani> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Expanded(
-          child: Text("Devam ederek, Gizlilik Politikamızı ve Kullanım Koşullarımızı kabul etmiş olursunuz.", style: TextStyle(fontSize: birim * 0.028, color: Colors.black45, height: 1.4)),
+          child: Text("Devam ederek, Gizlilik Politikamızı ve Kullanım Koşullarımızı kabul etmiş olursunuz.", style: TextStyle(fontSize: birim * 0.030, color: Colors.black87, height: 1.4)),
         ),
         SizedBox(width: birim * 0.05),
         InkWell(
@@ -180,7 +180,7 @@ class _KayitEkraniState extends State<KayitEkrani> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
-        backgroundColor: const Color(0xFFE7E9E8),
+        backgroundColor: Color.fromARGB(255, 228, 242, 247),
         resizeToAvoidBottomInset: true,
         body: Stack(
           children: [

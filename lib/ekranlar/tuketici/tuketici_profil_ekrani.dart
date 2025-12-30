@@ -1,4 +1,4 @@
-import 'dart:ui'; // Glassmorphism (Blur) için gerekli kütüphane
+import 'dart:ui'; // Glassmorphism ve PointerDeviceKind için gerekli
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -22,7 +22,7 @@ class _TuketiciProfilEkraniState extends State<TuketiciProfilEkrani> {
 
   bool _isSaving = false;
 
-  // --- TEMA RENKLERİ (Keşfet ekranından alındı) ---
+  // --- TEMA RENKLERİ ---
   final List<Color> _temaRenkleri = [
     const Color.fromARGB(255, 250, 245, 197),
     const Color.fromARGB(255, 243, 204, 203),
@@ -40,11 +40,11 @@ class _TuketiciProfilEkraniState extends State<TuketiciProfilEkrani> {
     super.dispose();
   }
 
-  // --- ARKA PLAN (Rengi Keşfet ekranıyla eşitlendi) ---
+  // --- ARKA PLAN ---
   Widget _buildBackground() {
     return Stack(
       children: [
-        Container(color: const Color.fromARGB(255, 228, 242, 247)), // Yeni Zemin Rengi
+        Container(color: const Color.fromARGB(255, 228, 242, 247)),
         Positioned.fill(
           child: Image.asset(
             'assets/inekler.png',
@@ -193,181 +193,188 @@ class _TuketiciProfilEkraniState extends State<TuketiciProfilEkrani> {
               String hakkimda = data?['hakkimda'] ?? "Henüz bilgi girilmemiş.";
               String konum = data?['konum'] ?? "Konum Yok";
               
-              // Favoriler listesini al
               List favoriler = data?['favoriler'] ?? [];
 
-              // Controllerları güncelle
               if (_adSoyadController.text.isEmpty) _adSoyadController.text = adSoyad;
               if (_hakkimdaController.text.isEmpty) _hakkimdaController.text = hakkimda;
               if (_konumController.text.isEmpty) _konumController.text = konum;
 
-              return CustomScrollView(
-                slivers: [
-                  // --- A. ÜST BOŞLUK (Sliver) ---
-                  SliverAppBar(
-                    expandedHeight: size.height * 0.53,
-                    pinned: false,
-                    floating: false,
-                    snap: false,
-                    backgroundColor: Colors.transparent,
-                    surfaceTintColor: Colors.transparent,
-                    elevation: 0,
-                    systemOverlayStyle: SystemUiOverlayStyle.dark,
-                    flexibleSpace: FlexibleSpaceBar(
-                      background: Container(color: Colors.transparent),
+              // --- SCROLL CONFIGURATION (Fare ile sürükleme) ---
+              return ScrollConfiguration(
+                behavior: ScrollConfiguration.of(context).copyWith(
+                  dragDevices: {
+                    PointerDeviceKind.touch,
+                    PointerDeviceKind.mouse, // Fare desteği
+                  },
+                ),
+                child: CustomScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  slivers: [
+                    SliverAppBar(
+                      expandedHeight: size.height * 0.56,
+                      pinned: false,
+                      floating: false,
+                      snap: false,
+                      backgroundColor: Colors.transparent,
+                      surfaceTintColor: Colors.transparent,
+                      elevation: 0,
+                      systemOverlayStyle: SystemUiOverlayStyle.dark,
+                      flexibleSpace: FlexibleSpaceBar(
+                        background: Container(color: Colors.transparent),
+                      ),
                     ),
-                  ),
 
-                  // --- B. PROFİL KARTI VE İÇERİK ---
-                  SliverToBoxAdapter(
-                    child: Stack(
-                      clipBehavior: Clip.none,
-                      children: [
-                        // 1. BEYAZ KART
-                        Container(
-                          margin: EdgeInsets.only(top: avatarDiameter / 2),
-                          constraints: BoxConstraints(minHeight: size.height * 0.7),
-                          decoration: const BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.vertical(top: Radius.circular(40)),
-                            boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 20, offset: Offset(0, -5))],
-                          ),
-                          child: Padding(
-                            padding: EdgeInsets.fromLTRB(contentPadding, 24, contentPadding, 100),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SizedBox(height: (avatarDiameter / 2) + 5),
+                    SliverToBoxAdapter(
+                      child: Stack(
+                        clipBehavior: Clip.none,
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(top: avatarDiameter / 2),
+                            constraints: BoxConstraints(minHeight: size.height * 0.7),
+                            decoration: const BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.vertical(top: Radius.circular(40)),
+                              boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 20, offset: Offset(0, -5))],
+                            ),
+                            child: Padding(
+                              padding: EdgeInsets.fromLTRB(contentPadding, 24, contentPadding, 100),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(height: (avatarDiameter / 2) + 5),
 
-                                // İSİM
-                                Text(
-                                  adSoyad,
-                                  style: const TextStyle(fontSize: 23, fontWeight: FontWeight.bold, color: Color(0xFF1E201C)),
-                                ),
-                                const SizedBox(height: 12),
-
-                                // KONUM ROZETİ
-                                Container(
-                                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                                  decoration: BoxDecoration(
-                                    color: const Color.fromARGB(255, 30, 77, 24).withOpacity(0.1),
-                                    borderRadius: BorderRadius.circular(20),
+                                  Text(
+                                    adSoyad,
+                                    style: const TextStyle(fontSize: 23, fontWeight: FontWeight.bold, color: Color(0xFF1E201C)),
                                   ),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      const Icon(Icons.location_on, size: 14, color: Color(0xFF2D5A27)),
-                                      const SizedBox(width: 4),
-                                      Flexible(
-                                        child: Text(
-                                          konum,
-                                          style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Color(0xFF2D5A27)),
-                                          overflow: TextOverflow.ellipsis,
+                                  const SizedBox(height: 12),
+
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                                    decoration: BoxDecoration(
+                                      color: const Color.fromARGB(255, 30, 77, 24).withOpacity(0.1),
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        const Icon(Icons.location_on, size: 14, color: Color(0xFF2D5A27)),
+                                        const SizedBox(width: 4),
+                                        Flexible(
+                                          child: Text(
+                                            konum,
+                                            style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Color(0xFF2D5A27)),
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
                                         ),
-                                      ),
+                                      ],
+                                    ),
+                                  ),
+
+                                  const SizedBox(height: 25),
+
+                                  Text("Hakkımda", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.grey.shade800)),
+                                  const SizedBox(height: 5),
+                                  Text(hakkimda, style: TextStyle(color: Colors.grey.shade600, height: 1.5), textAlign: TextAlign.left),
+
+                                  const SizedBox(height: 25),
+
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                    children: [
+                                      _buildStatItem("Favoriler", "${favoriler.length}"),
+                                      _buildStatItem("Takip", "124"),
+                                      _buildStatItem("Puan", "4.8"),
                                     ],
                                   ),
-                                ),
 
-                                const SizedBox(height: 25),
+                                  const SizedBox(height: 25),
 
-                                // HAKKIMDA
-                                Text("Hakkımda", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.grey.shade800)),
-                                const SizedBox(height: 5),
-                                Text(hakkimda, style: TextStyle(color: Colors.grey.shade600, height: 1.5), textAlign: TextAlign.left),
+                                  Text("Favorilerim", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.grey.shade800)),
+                                  const SizedBox(height: 15),
 
-                                const SizedBox(height: 25),
-
-                                // İSTATİSTİKLER
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                  children: [
-                                    _buildStatItem("Favoriler", "${favoriler.length}"),
-                                    _buildStatItem("Takip", "124"),
-                                    _buildStatItem("Puan", "4.8"),
-                                  ],
-                                ),
-
-                                const SizedBox(height: 25),
-
-                                // FAVORİLERİM LİSTESİ
-                                Text("Favorilerim", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.grey.shade800)),
-                                const SizedBox(height: 15),
-
-                                SizedBox(
-                                  height: 200, // Liste yüksekliği
-                                  child: StreamBuilder<QuerySnapshot>(
-                                    stream: FirebaseFirestore.instance.collection('urunler').snapshots(),
-                                    builder: (context, urunSnapshot) {
-                                      if (!urunSnapshot.hasData) return const Center(child: CircularProgressIndicator());
-                                      
-                                      // Tüm ürünlerden sadece favori listesinde olanları filtrele
-                                      var favoriUrunler = urunSnapshot.data!.docs.where((doc) {
-                                        return favoriler.contains(doc.id);
-                                      }).toList();
-
-                                      if (favoriUrunler.isEmpty) {
-                                        return Center(child: Text("Henüz favori ürününüz yok.", style: TextStyle(color: Colors.grey.shade500)));
-                                      }
-
-                                      return ListView.builder(
-                                        scrollDirection: Axis.horizontal,
-                                        itemCount: favoriUrunler.length,
-                                        itemBuilder: (context, index) {
-                                          var urun = favoriUrunler[index].data() as Map<String, dynamic>;
-                                          // Keşfet ekranındaki stili kullanıyoruz
-                                          return _buildProductCard(urun['urunAdi'], index, birim);
+                                  SizedBox(
+                                    height: 200,
+                                    // YATAY LİSTE İÇİN DE SCROLL CONFIGURATION
+                                    child: ScrollConfiguration(
+                                      behavior: ScrollConfiguration.of(context).copyWith(
+                                        dragDevices: {
+                                          PointerDeviceKind.touch,
+                                          PointerDeviceKind.mouse,
                                         },
-                                      );
-                                    },
+                                      ),
+                                      child: StreamBuilder<QuerySnapshot>(
+                                        stream: FirebaseFirestore.instance.collection('urunler').snapshots(),
+                                        builder: (context, urunSnapshot) {
+                                          if (!urunSnapshot.hasData) return const Center(child: CircularProgressIndicator());
+                                          
+                                          var favoriUrunler = urunSnapshot.data!.docs.where((doc) {
+                                            return favoriler.contains(doc.id);
+                                          }).toList();
+
+                                          if (favoriUrunler.isEmpty) {
+                                            return Center(child: Text("Henüz favori ürününüz yok.", style: TextStyle(color: Colors.grey.shade500)));
+                                          }
+
+                                          return ListView.builder(
+                                            scrollDirection: Axis.horizontal,
+                                            // ÖNEMLİ: Ekran döndüğünde boşluk oluşmaması için padding sıfırlandı.
+                                            padding: EdgeInsets.zero, 
+                                            itemCount: favoriUrunler.length,
+                                            itemBuilder: (context, index) {
+                                              var urun = favoriUrunler[index].data() as Map<String, dynamic>;
+                                              return _buildProductCard(urun['urunAdi'], index, birim);
+                                            },
+                                          );
+                                        },
+                                      ),
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
-                        ),
 
-                        // 2. PROFİL RESMİ
-                        Positioned(
-                          top: 0,
-                          left: contentPadding,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              border: Border.all(color: const Color.fromARGB(255, 255, 255, 255), width: 6),
-                            ),
-                            child: CircleAvatar(
-                              radius: avatarDiameter / 2,
-                              backgroundColor: Colors.grey.shade200,
-                              backgroundImage: const AssetImage('assets/tuketici.png'), 
+                          Positioned(
+                            top: 0,
+                            left: contentPadding,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(color: const Color.fromARGB(255, 255, 255, 255), width: 6),
+                              ),
+                              child: CircleAvatar(
+                                radius: avatarDiameter / 2,
+                                backgroundColor: Colors.grey.shade200,
+                                backgroundImage: const AssetImage('assets/tuketici.png'), 
+                              ),
                             ),
                           ),
-                        ),
 
-                        // 3. DÜZENLE BUTONU
-                        Positioned(
-                          top: (avatarDiameter / 2) + 20,
-                          right: contentPadding,
-                          child: InkWell(
-                            onTap: _showEditSheet,
-                            borderRadius: BorderRadius.circular(12),
-                            child: Padding(
-                              padding: const EdgeInsets.all(3.0),
-                              child: Text(
-                                "Profili düzenle",
-                                style: TextStyle(
-                                  color: const Color.fromARGB(255, 0, 0, 0),
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 15,
+                          Positioned(
+                            top: (avatarDiameter / 2) + 20,
+                            right: contentPadding,
+                            child: InkWell(
+                              onTap: _showEditSheet,
+                              borderRadius: BorderRadius.circular(12),
+                              child: Padding(
+                                padding: const EdgeInsets.all(3.0),
+                                child: Text(
+                                  "Profili düzenle",
+                                  style: TextStyle(
+                                    color: const Color.fromARGB(255, 0, 0, 0),
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 15,
+                                  ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               );
             },
           ),
@@ -376,7 +383,6 @@ class _TuketiciProfilEkraniState extends State<TuketiciProfilEkrani> {
     );
   }
 
-  // --- YARDIMCI WIDGETLAR ---
   Widget _buildStatItem(String label, String value) {
     return Container(
       width: 90,
@@ -396,19 +402,18 @@ class _TuketiciProfilEkraniState extends State<TuketiciProfilEkrani> {
     );
   }
 
-  // Keşfet Ekranındaki Stil (Görsel + Ürün İsmi)
   Widget _buildProductCard(String name, int index, double birim) {
     Color kartRengi = _temaRenkleri[index % _temaRenkleri.length];
 
     return Container(
-      width: birim * 0.28, // Boyut ayarlandı
-      margin: const EdgeInsets.only(right: 15, bottom: 10, top: 5), // Gölge kesilmesin diye margin
+      width: birim * 0.28, 
+      margin: const EdgeInsets.only(right: 15, bottom: 10, top: 5),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(25), // Keşfet ekranıyla aynı radius
+        borderRadius: BorderRadius.circular(25),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05), // Keşfet ekranıyla aynı gölge
+            color: Colors.black.withOpacity(0.05),
             blurRadius: 15,
             offset: const Offset(0, 4)
           )
@@ -416,28 +421,26 @@ class _TuketiciProfilEkraniState extends State<TuketiciProfilEkrani> {
       ),
       child: Column(
         children: [
-          // GÖRSEL KISMI (Kare)
           AspectRatio(
             aspectRatio: 1.0,
             child: Container(
               decoration: BoxDecoration(
                 color: kartRengi,
-                borderRadius: BorderRadius.circular(20) // İç radius
+                borderRadius: BorderRadius.circular(20)
               ),
               child: Icon(Icons.eco, color: Colors.black.withOpacity(0.1), size: birim * 0.15),
             ),
           ),
           const SizedBox(height: 10),
           
-          // İSİM KISMI
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 4.0),
             child: Text(
               name,
-              style: TextStyle(
+              style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 15,
-                color: const Color(0xFF1E201C),
+                color: Color(0xFF1E201C),
               ),
               maxLines: 2,
               overflow: TextOverflow.ellipsis,

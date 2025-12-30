@@ -226,8 +226,8 @@ class _KesfetEkraniState extends State<KesfetEkrani> {
                           children: [
                             Text("Taze ve Sağlıklı",
                                 style: TextStyle(
-                                    fontSize: birim * 0.045,
-                                    color: Colors.grey.shade700)), // Renk koyulaştırıldı okunurluk için
+                                    fontSize: birim * 0.050,
+                                    color: const Color.fromARGB(255, 70, 70, 70))), // Renk koyulaştırıldı okunurluk için
                             Text("Yeni Ürünler Keşfet",
                                 style: TextStyle(
                                     fontSize: birim * 0.07,

@@ -145,12 +145,12 @@ class _GirisEkraniState extends State<GirisEkrani> {
     );
   }
 
-  // 2. HEADER (Logo ve Kayıt Ol Butonu)
+  // 2. HEADER (Marka ve Kayıt Ol Butonu)
   Widget _buildHeader(BuildContext context, double birim) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text("hangisi", style: TextStyle(fontFamily: 'Inter', fontSize: birim * 0.045, color: Colors.black54, fontWeight: FontWeight.w500)),
+        Text("hangisi", style: TextStyle(fontFamily: 'Inter', fontSize: birim * 0.050, color: Colors.black54, fontWeight: FontWeight.w500)),
         TextButton(
           onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const KayitEkrani())),
           style: TextButton.styleFrom(padding: EdgeInsets.zero, minimumSize: Size.zero, tapTargetSize: MaterialTapTargetSize.shrinkWrap),
@@ -165,11 +165,11 @@ class _GirisEkraniState extends State<GirisEkrani> {
     return Align(
       alignment: Alignment.centerRight,
       child: Padding(
-        padding: EdgeInsets.only(right: birim * 0.02),
+        padding: EdgeInsets.only(right: birim * 0.02, top: birim * 0.02),
         child: TextButton(
           onPressed: _sifreSifirla,
           style: TextButton.styleFrom(padding: EdgeInsets.zero, minimumSize: Size.zero, tapTargetSize: MaterialTapTargetSize.shrinkWrap),
-          child: Text("Şifremi Unuttum", style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w600, fontSize: birim * 0.028)),
+          child: Text("Şifremi Unuttum", style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w600, fontSize: birim * 0.030)),
         ),
       ),
     );
@@ -183,7 +183,7 @@ class _GirisEkraniState extends State<GirisEkrani> {
         Expanded(
           child: Text(
             "Devam ederek, Gizlilik Politikamızı ve Kullanım Koşullarımızı kabul etmiş olursunuz.",
-            style: TextStyle(fontSize: birim * 0.028, color: Colors.black45, height: 1.4),
+            style: TextStyle(fontSize: birim * 0.030, color: Colors.black54, height: 1.4,),
           ),
         ),
         SizedBox(width: birim * 0.05),
@@ -210,7 +210,7 @@ class _GirisEkraniState extends State<GirisEkrani> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
-        backgroundColor: const Color(0xFFE7E9E8),
+        backgroundColor: Color.fromARGB(255, 228, 242, 247),
         resizeToAvoidBottomInset: true,
         body: Stack(
           children: [
