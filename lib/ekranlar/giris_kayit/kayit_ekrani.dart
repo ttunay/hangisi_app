@@ -98,7 +98,7 @@ class _KayitEkraniState extends State<KayitEkrani> {
                 )
               : null,
           enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(50), borderSide: BorderSide.none),
-          focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(50), borderSide: const BorderSide(color: Colors.green, width: 2)),
+          focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(50), borderSide: const BorderSide(color: Color.fromARGB(255, 0, 0, 0), width: 2)),
         ),
       ),
     );

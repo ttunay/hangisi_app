@@ -59,14 +59,17 @@ class _KesfetEkraniState extends State<KesfetEkrani> {
           mainAxisSize: MainAxisSize.min,
           children: [
             const Text("Barkod İle Ara",
-                style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold)),
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold)),
             const SizedBox(height: 20),
             TextField(
               controller: _barkodController,
               decoration: InputDecoration(
                 hintText: "Barkod numarasını girin...",
-                prefixIcon:
-                    const Icon(Icons.qr_code_scanner, color: Color.fromARGB(255, 0, 0, 0)),
+                prefixIcon: const Icon(Icons.qr_code_scanner,
+                    color: Color.fromARGB(255, 0, 0, 0)),
                 border:
                     OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
               ),
@@ -84,7 +87,8 @@ class _KesfetEkraniState extends State<KesfetEkrani> {
                     _barkodController.text.trim().toLowerCase());
                 Navigator.pop(context);
               },
-              child: const Text("Sorgula", style: TextStyle(color: Colors.white, fontSize: 20 )),
+              child: const Text("Sorgula",
+                  style: TextStyle(color: Colors.white, fontSize: 20)),
             ),
             const SizedBox(height: 30),
           ],
@@ -109,7 +113,7 @@ class _KesfetEkraniState extends State<KesfetEkrani> {
     }
   }
 
-  // --- ÜRÜN DETAY PANELİ (DraggableScrollableSheet - Yeni Tasarım) ---
+  // --- ÜRÜN DETAY PANELİ ---
   void _urunDetayGoster(Map<String, dynamic> urun, Color kartRengi) {
     final double birim = MediaQuery.of(context).size.shortestSide;
     showModalBottomSheet(
@@ -151,7 +155,7 @@ class _KesfetEkraniState extends State<KesfetEkrani> {
               Text("Barkod: ${urun['barkod'] ?? '-'}",
                   style: const TextStyle(
                       color: Colors.black87, fontWeight: FontWeight.w500)),
-              SizedBox(height: birim * 0.04),
+              SizedBox(height: birim * 0.06),
               _detaySatiri(Icons.description_outlined, "Açıklama",
                   urun['aciklama'] ?? "-", birim),
               _detaySatiri(Icons.grass_outlined, "Tohum",
@@ -215,6 +219,7 @@ class _KesfetEkraniState extends State<KesfetEkrani> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // --- SABİT KISIM (BAŞLIK & ARAMA) ---
                 Padding(
                   padding: EdgeInsets.fromLTRB(
                       birim * 0.06, birim * 0.06, birim * 0.06, 0),
@@ -227,7 +232,8 @@ class _KesfetEkraniState extends State<KesfetEkrani> {
                             Text("Taze ve Sağlıklı",
                                 style: TextStyle(
                                     fontSize: birim * 0.050,
-                                    color: const Color.fromARGB(255, 70, 70, 70))), // Renk koyulaştırıldı okunurluk için
+                                    color:
+                                        const Color.fromARGB(255, 70, 70, 70))),
                             Text("Yeni Ürünler Keşfet",
                                 style: TextStyle(
                                     fontSize: birim * 0.07,
@@ -247,6 +253,7 @@ class _KesfetEkraniState extends State<KesfetEkrani> {
                     ],
                   ),
                 ),
+
                 Padding(
                   padding: EdgeInsets.symmetric(
                       horizontal: birim * 0.06, vertical: birim * 0.04),
@@ -276,6 +283,7 @@ class _KesfetEkraniState extends State<KesfetEkrani> {
                     ),
                   ),
                 ),
+
                 if (_barkodKelimesi.isNotEmpty)
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: birim * 0.06),
@@ -286,6 +294,8 @@ class _KesfetEkraniState extends State<KesfetEkrani> {
                       deleteIconColor: Colors.red,
                     ),
                   ),
+
+                // --- KAYDIRILABİLİR KISIM (LİSTE) ---
                 Expanded(
                   child: StreamBuilder<DocumentSnapshot>(
                     stream: FirebaseFirestore.instance
@@ -305,18 +315,21 @@ class _KesfetEkraniState extends State<KesfetEkrani> {
                             .collection('urunler')
                             .snapshots(),
                         builder: (context, snapshot) {
-                          if (!snapshot.hasData)
+                          if (!snapshot.hasData) {
                             return const Center(
                                 child: CircularProgressIndicator());
+                          }
 
                           var docs = snapshot.data!.docs.where((doc) {
                             var urunVerisi = doc.data() as Map<String, dynamic>;
-                            String urunAdi =
-                                urunVerisi['urunAdi']?.toString().toLowerCase() ??
-                                    "";
-                            String barkod =
-                                urunVerisi['barkod']?.toString().toLowerCase() ??
-                                    "";
+                            String urunAdi = urunVerisi['urunAdi']
+                                    ?.toString()
+                                    .toLowerCase() ??
+                                "";
+                            String barkod = urunVerisi['barkod']
+                                    ?.toString()
+                                    .toLowerCase() ??
+                                "";
 
                             if (_barkodKelimesi.isNotEmpty) {
                               return barkod == _barkodKelimesi;
@@ -324,18 +337,28 @@ class _KesfetEkraniState extends State<KesfetEkrani> {
                             return urunAdi.contains(_aramaKelimesi);
                           }).toList();
 
+                          if (docs.isEmpty) {
+                            return Center(
+                                child: Text("Ürün bulunamadı.",
+                                    style: TextStyle(
+                                        color: Colors.black54,
+                                        fontSize: birim * 0.04)));
+                          }
+
                           return ListView.builder(
+                            physics: const AlwaysScrollableScrollPhysics(), // Yaylanma efekti için
                             padding: EdgeInsets.symmetric(
                                 horizontal: birim * 0.06),
                             itemCount: docs.length,
                             itemBuilder: (context, index) {
-                              var urun = docs[index].data() as Map<String, dynamic>;
+                              var urun =
+                                  docs[index].data() as Map<String, dynamic>;
                               String urunId = docs[index].id;
                               bool isFavorite = favoriIds.contains(urunId);
                               Color kartRengi =
                                   _temaRenkleri[index % _temaRenkleri.length];
 
-                              // --- YENİ KART TASARIMI ---
+                              // --- KART TASARIMI ---
                               return GestureDetector(
                                 onTap: () =>
                                     _urunDetayGoster(urun, kartRengi),
@@ -349,7 +372,8 @@ class _KesfetEkraniState extends State<KesfetEkrani> {
                                       borderRadius: BorderRadius.circular(25),
                                       boxShadow: [
                                         BoxShadow(
-                                            color: Colors.black.withOpacity(0.05),
+                                            color: Colors.black
+                                                .withOpacity(0.05),
                                             blurRadius: 15,
                                             offset: const Offset(0, 4))
                                       ]),
@@ -363,7 +387,8 @@ class _KesfetEkraniState extends State<KesfetEkrani> {
                                               decoration: BoxDecoration(
                                                   color: kartRengi,
                                                   borderRadius:
-                                                      BorderRadius.circular(20)),
+                                                      BorderRadius.circular(
+                                                          20)),
                                               child: Icon(Icons.eco,
                                                   color: Colors.black
                                                       .withOpacity(0.1),
@@ -382,9 +407,10 @@ class _KesfetEkraniState extends State<KesfetEkrani> {
                                                   urun['urunAdi'] ?? "",
                                                   style: TextStyle(
                                                       fontSize: birim * 0.05,
-                                                      fontWeight: FontWeight.w900,
-                                                      color:
-                                                          const Color(0xFF1E201C)),
+                                                      fontWeight:
+                                                          FontWeight.w900,
+                                                      color: const Color(
+                                                          0xFF1E201C)),
                                                   maxLines: 1,
                                                   overflow:
                                                       TextOverflow.ellipsis,
@@ -394,15 +420,17 @@ class _KesfetEkraniState extends State<KesfetEkrani> {
                                                 Text(
                                                   urun['aciklama'] ?? "",
                                                   style: TextStyle(
-                                                      color: const Color.fromARGB(
-                                                          255, 43, 43, 43),
+                                                      color:
+                                                          const Color.fromARGB(
+                                                              255, 43, 43, 43),
                                                       fontSize: birim * 0.04,
                                                       height: 1.2),
                                                   maxLines: 2,
                                                   overflow:
                                                       TextOverflow.ellipsis,
                                                 ),
-                                                SizedBox(height: birim * 0.02),
+                                                SizedBox(
+                                                    height: birim * 0.02),
                                                 Container(
                                                   padding:
                                                       const EdgeInsets.symmetric(
@@ -412,8 +440,8 @@ class _KesfetEkraniState extends State<KesfetEkrani> {
                                                       color: kartRengi
                                                           .withOpacity(0.15),
                                                       borderRadius:
-                                                          BorderRadius.circular(
-                                                              8)),
+                                                          BorderRadius
+                                                              .circular(8)),
                                                   child: Text(
                                                       "Barkod: ${urun['barkod'] ?? '-'}",
                                                       style: TextStyle(
@@ -428,7 +456,7 @@ class _KesfetEkraniState extends State<KesfetEkrani> {
                                           ),
                                         ],
                                       ),
-                                      // FAVORİ BUTONU (KARTIN SAĞ ÜST KÖŞESİNE EKLENDİ)
+                                      // FAVORİ BUTONU
                                       Positioned(
                                         top: 0,
                                         right: 0,
@@ -441,7 +469,8 @@ class _KesfetEkraniState extends State<KesfetEkrani> {
                                                 : Icons.favorite_border,
                                             color: isFavorite
                                                 ? Colors.red
-                                                : Colors.grey.withOpacity(0.5),
+                                                : Colors.grey
+                                                    .withOpacity(0.5),
                                             size: 24,
                                           ),
                                         ),

@@ -111,39 +111,44 @@ class _TuketiciProfilEkraniState extends State<TuketiciProfilEkrani> {
                     const SizedBox(height: 15),
                     _buildInput(_konumController, "Konum", Icons.location_on),
                     const SizedBox(height: 15),
-                    _buildInput(_hakkimdaController, "Hakkımda", Icons.description, maxLines: 3),
+                    _buildInput(_hakkimdaController, "Hakkımda",
+                        Icons.description,
+                        maxLines: 3),
                     const SizedBox(height: 30),
-                    ElevatedButton(
-                      onPressed: _isSaving
-                          ? null
-                          : () async {
-                              if (_formKey.currentState!.validate()) {
-                                setState(() => _isSaving = true);
-                                await FirebaseFirestore.instance
-                                    .collection('kullanicilar')
-                                    .doc(user!.uid)
-                                    .update({
-                                  'adSoyad': _adSoyadController.text,
-                                  'hakkimda': _hakkimdaController.text,
-                                  'konum': _konumController.text,
-                                });
-                                setState(() => _isSaving = false);
-                                if (mounted) Navigator.pop(context);
-                              }
-                            },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color.fromARGB(255, 0, 0, 0),
-                        minimumSize: const Size(double.infinity, 55),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
+                    Center(
+                      child: ElevatedButton(
+                        onPressed: _isSaving
+                            ? null
+                            : () async {
+                                if (_formKey.currentState!.validate()) {
+                                  setState(() => _isSaving = true);
+                                  await FirebaseFirestore.instance
+                                      .collection('kullanicilar')
+                                      .doc(user!.uid)
+                                      .update({
+                                    'adSoyad': _adSoyadController.text,
+                                    'hakkimda': _hakkimdaController.text,
+                                    'konum': _konumController.text,
+                                  });
+                                  setState(() => _isSaving = false);
+                                  if (mounted) Navigator.pop(context);
+                                }
+                              },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color.fromARGB(255, 0, 0, 0),
+                          minimumSize: const Size(45, 55),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
                         ),
+                        child: _isSaving
+                            ? const CircularProgressIndicator(color: Colors.white)
+                            : const Text(
+                                "Kaydet",
+                                style:
+                                    TextStyle(color: Colors.white, fontSize: 16),
+                              ),
                       ),
-                      child: _isSaving
-                          ? const CircularProgressIndicator(color: Colors.white)
-                          : const Text(
-                              "Kaydet",
-                              style: TextStyle(color: Colors.white, fontSize: 16),
-                            ),
                     ),
                     const SizedBox(height: 30),
                   ],
@@ -156,7 +161,9 @@ class _TuketiciProfilEkraniState extends State<TuketiciProfilEkrani> {
     );
   }
 
-  Widget _buildInput(TextEditingController controller, String label, IconData icon, {int maxLines = 1}) {
+  Widget _buildInput(
+      TextEditingController controller, String label, IconData icon,
+      {int maxLines = 1}) {
     return TextFormField(
       controller: controller,
       maxLines: maxLines,
@@ -165,8 +172,12 @@ class _TuketiciProfilEkraniState extends State<TuketiciProfilEkrani> {
         prefixIcon: Icon(icon, color: const Color.fromARGB(255, 70, 70, 70)),
         filled: true,
         fillColor: Colors.grey.shade100,
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(15), borderSide: BorderSide.none),
-        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(15), borderSide: const BorderSide(color: Color(0xFF2D5A27))),
+        border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(15),
+            borderSide: BorderSide.none),
+        focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(15),
+            borderSide: const BorderSide(color: Color(0xFF2D5A27))),
       ),
     );
   }
@@ -184,34 +195,44 @@ class _TuketiciProfilEkraniState extends State<TuketiciProfilEkrani> {
         Scaffold(
           backgroundColor: Colors.transparent,
           body: StreamBuilder<DocumentSnapshot>(
-            stream: FirebaseFirestore.instance.collection('kullanicilar').doc(user?.uid).snapshots(),
+            stream: FirebaseFirestore.instance
+                .collection('kullanicilar')
+                .doc(user?.uid)
+                .snapshots(),
             builder: (context, snapshot) {
-              if (!snapshot.hasData) return const Center(child: CircularProgressIndicator());
+              if (!snapshot.hasData)
+                return const Center(child: CircularProgressIndicator());
 
               var data = snapshot.data!.data() as Map<String, dynamic>?;
               String adSoyad = data?['adSoyad'] ?? "İsimsiz Kullanıcı";
-              String hakkimda = data?['hakkimda'] ?? "Henüz bilgi girilmemiş.";
+              String hakkimda =
+                  data?['hakkimda'] ?? "Henüz bilgi girilmemiş.";
               String konum = data?['konum'] ?? "Konum Yok";
-              
+
+              // Favori listesini burada çekiyoruz
               List favoriler = data?['favoriler'] ?? [];
 
-              if (_adSoyadController.text.isEmpty) _adSoyadController.text = adSoyad;
-              if (_hakkimdaController.text.isEmpty) _hakkimdaController.text = hakkimda;
-              if (_konumController.text.isEmpty) _konumController.text = konum;
+              if (_adSoyadController.text.isEmpty)
+                _adSoyadController.text = adSoyad;
+              if (_hakkimdaController.text.isEmpty)
+                _hakkimdaController.text = hakkimda;
+              if (_konumController.text.isEmpty)
+                _konumController.text = konum;
 
-              // --- SCROLL CONFIGURATION (Fare ile sürükleme) ---
               return ScrollConfiguration(
                 behavior: ScrollConfiguration.of(context).copyWith(
                   dragDevices: {
                     PointerDeviceKind.touch,
-                    PointerDeviceKind.mouse, // Fare desteği
+                    PointerDeviceKind.mouse,
                   },
                 ),
                 child: CustomScrollView(
-                  physics: const AlwaysScrollableScrollPhysics(),
+                  physics: const BouncingScrollPhysics(
+                      parent: AlwaysScrollableScrollPhysics()),
                   slivers: [
                     SliverAppBar(
-                      expandedHeight: size.height * 0.56,
+                      stretch: true,
+                      expandedHeight: size.height * 0.10,
                       pinned: false,
                       floating: false,
                       snap: false,
@@ -220,110 +241,148 @@ class _TuketiciProfilEkraniState extends State<TuketiciProfilEkrani> {
                       elevation: 0,
                       systemOverlayStyle: SystemUiOverlayStyle.dark,
                       flexibleSpace: FlexibleSpaceBar(
+                        stretchModes: const [StretchMode.zoomBackground],
                         background: Container(color: Colors.transparent),
                       ),
                     ),
-
                     SliverToBoxAdapter(
                       child: Stack(
                         clipBehavior: Clip.none,
                         children: [
                           Container(
                             margin: EdgeInsets.only(top: avatarDiameter / 2),
-                            constraints: BoxConstraints(minHeight: size.height * 0.7),
+                            constraints:
+                                BoxConstraints(minHeight: size.height * 0.7),
                             decoration: const BoxDecoration(
                               color: Colors.white,
-                              borderRadius: BorderRadius.vertical(top: Radius.circular(40)),
-                              boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 20, offset: Offset(0, -5))],
+                              borderRadius: BorderRadius.vertical(
+                                  top: Radius.circular(40)),
                             ),
                             child: Padding(
-                              padding: EdgeInsets.fromLTRB(contentPadding, 24, contentPadding, 100),
+                              padding: EdgeInsets.fromLTRB(
+                                  contentPadding, 24, contentPadding, 0),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   SizedBox(height: (avatarDiameter / 2) + 5),
-
                                   Text(
                                     adSoyad,
-                                    style: const TextStyle(fontSize: 23, fontWeight: FontWeight.bold, color: Color(0xFF1E201C)),
+                                    style: const TextStyle(
+                                        fontSize: 23,
+                                        fontWeight: FontWeight.bold,
+                                        color: Color(0xFF1E201C)),
                                   ),
                                   const SizedBox(height: 12),
-
                                   Container(
-                                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 12, vertical: 6),
                                     decoration: BoxDecoration(
-                                      color: const Color.fromARGB(255, 30, 77, 24).withOpacity(0.1),
+                                      color:
+                                          Colors.deepOrange.withOpacity(0.3),
                                       borderRadius: BorderRadius.circular(20),
                                     ),
                                     child: Row(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
-                                        const Icon(Icons.location_on, size: 14, color: Color(0xFF2D5A27)),
-                                        const SizedBox(width: 4),
+                                        const Icon(Icons.location_on,
+                                            size: 14,
+                                            color: Colors.deepOrange),
+                                        const SizedBox(width: 2),
                                         Flexible(
                                           child: Text(
                                             konum,
-                                            style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Color(0xFF2D5A27)),
+                                            style: const TextStyle(
+                                                fontSize: 13,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.deepOrange),
                                             overflow: TextOverflow.ellipsis,
                                           ),
                                         ),
                                       ],
                                     ),
                                   ),
-
                                   const SizedBox(height: 25),
-
-                                  Text("Hakkımda", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.grey.shade800)),
+                                  Text("Hakkımda",
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.grey.shade900)),
                                   const SizedBox(height: 5),
-                                  Text(hakkimda, style: TextStyle(color: Colors.grey.shade600, height: 1.5), textAlign: TextAlign.left),
-
+                                  Text(hakkimda,
+                                      style: TextStyle(
+                                          color: Colors.grey.shade600,
+                                          height: 1.5),
+                                      textAlign: TextAlign.left),
                                   const SizedBox(height: 25),
-
+                                  
+                                  // --- GÜNCELLENEN İSTATİSTİK KISMI ---
                                   Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
                                     children: [
-                                      _buildStatItem("Favoriler", "${favoriler.length}"),
+                                      // Burayı güncelledik: Gerçek liste uzunluğunu gösteriyor
+                                      _buildStatItem("Favoriler",
+                                          "${favoriler.length}"),
                                       _buildStatItem("Takip", "124"),
                                       _buildStatItem("Puan", "4.8"),
                                     ],
                                   ),
-
+                                  
                                   const SizedBox(height: 25),
-
-                                  Text("Favorilerim", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.grey.shade800)),
+                                  Text("Favorilerim",
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.grey.shade900)),
                                   const SizedBox(height: 15),
-
                                   SizedBox(
                                     height: 200,
-                                    // YATAY LİSTE İÇİN DE SCROLL CONFIGURATION
                                     child: ScrollConfiguration(
-                                      behavior: ScrollConfiguration.of(context).copyWith(
+                                      behavior: ScrollConfiguration.of(context)
+                                          .copyWith(
                                         dragDevices: {
                                           PointerDeviceKind.touch,
                                           PointerDeviceKind.mouse,
                                         },
                                       ),
                                       child: StreamBuilder<QuerySnapshot>(
-                                        stream: FirebaseFirestore.instance.collection('urunler').snapshots(),
+                                        stream: FirebaseFirestore.instance
+                                            .collection('urunler')
+                                            .snapshots(),
                                         builder: (context, urunSnapshot) {
-                                          if (!urunSnapshot.hasData) return const Center(child: CircularProgressIndicator());
-                                          
-                                          var favoriUrunler = urunSnapshot.data!.docs.where((doc) {
-                                            return favoriler.contains(doc.id);
+                                          if (!urunSnapshot.hasData)
+                                            return const Center(
+                                                child:
+                                                    CircularProgressIndicator());
+
+                                          var favoriUrunler = urunSnapshot
+                                              .data!.docs
+                                              .where((doc) {
+                                            return favoriler
+                                                .contains(doc.id);
                                           }).toList();
 
                                           if (favoriUrunler.isEmpty) {
-                                            return Center(child: Text("Henüz favori ürününüz yok.", style: TextStyle(color: Colors.grey.shade500)));
+                                            return Center(
+                                                child: Text(
+                                                    "Henüz favori ürününüz yok.",
+                                                    style: TextStyle(
+                                                        color: Colors
+                                                            .grey.shade500)));
                                           }
 
                                           return ListView.builder(
                                             scrollDirection: Axis.horizontal,
-                                            // ÖNEMLİ: Ekran döndüğünde boşluk oluşmaması için padding sıfırlandı.
-                                            padding: EdgeInsets.zero, 
+                                            padding: EdgeInsets.zero,
                                             itemCount: favoriUrunler.length,
                                             itemBuilder: (context, index) {
-                                              var urun = favoriUrunler[index].data() as Map<String, dynamic>;
-                                              return _buildProductCard(urun['urunAdi'], index, birim);
+                                              var urun = favoriUrunler[index]
+                                                      .data()
+                                                  as Map<String, dynamic>;
+                                              return _buildProductCard(
+                                                  urun['urunAdi'],
+                                                  index,
+                                                  birim);
                                             },
                                           );
                                         },
@@ -334,23 +393,25 @@ class _TuketiciProfilEkraniState extends State<TuketiciProfilEkrani> {
                               ),
                             ),
                           ),
-
                           Positioned(
                             top: 0,
                             left: contentPadding,
                             child: Container(
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
-                                border: Border.all(color: const Color.fromARGB(255, 255, 255, 255), width: 6),
+                                border: Border.all(
+                                    color: const Color.fromARGB(
+                                        255, 255, 255, 255),
+                                    width: 6),
                               ),
                               child: CircleAvatar(
                                 radius: avatarDiameter / 2,
                                 backgroundColor: Colors.grey.shade200,
-                                backgroundImage: const AssetImage('assets/tuketici.png'), 
+                                backgroundImage:
+                                    const AssetImage('assets/tuketici.png'),
                               ),
                             ),
                           ),
-
                           Positioned(
                             top: (avatarDiameter / 2) + 20,
                             right: contentPadding,
@@ -373,6 +434,11 @@ class _TuketiciProfilEkraniState extends State<TuketiciProfilEkrani> {
                         ],
                       ),
                     ),
+                    SliverFillRemaining(
+                      hasScrollBody: false,
+                      fillOverscroll: true,
+                      child: Container(color: Colors.white),
+                    ),
                   ],
                 ),
               );
@@ -383,6 +449,7 @@ class _TuketiciProfilEkraniState extends State<TuketiciProfilEkrani> {
     );
   }
 
+  // İSTATİSTİK KUTULARI
   Widget _buildStatItem(String label, String value) {
     return Container(
       width: 90,
@@ -390,13 +457,20 @@ class _TuketiciProfilEkraniState extends State<TuketiciProfilEkrani> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: const Color.fromARGB(255, 146, 193, 231)),
+        border:
+            Border.all(color: const Color.fromARGB(255, 146, 193, 231)),
       ),
       child: Column(
         children: [
-          Text(value, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Color.fromARGB(255, 146, 193, 231))),
+          Text(value,
+              style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Color.fromARGB(255, 0, 0, 0))),
           const SizedBox(height: 4),
-          Text(label, style: TextStyle(fontSize: 14, color: Color.fromARGB(255, 146, 193, 231))),
+          Text(label,
+              style: TextStyle(
+                  fontSize: 14, color: Color.fromARGB(255, 0, 0, 0))),
         ],
       ),
     );
@@ -406,33 +480,31 @@ class _TuketiciProfilEkraniState extends State<TuketiciProfilEkrani> {
     Color kartRengi = _temaRenkleri[index % _temaRenkleri.length];
 
     return Container(
-      width: birim * 0.28, 
+      width: birim * 0.28,
       margin: const EdgeInsets.only(right: 15, bottom: 10, top: 5),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(25),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 15,
-            offset: const Offset(0, 4)
-          )
-        ]
-      ),
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(25),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.05),
+              blurRadius: 15,
+              offset: const Offset(0, 4),
+            )
+          ]),
       child: Column(
         children: [
           AspectRatio(
             aspectRatio: 1.0,
             child: Container(
               decoration: BoxDecoration(
-                color: kartRengi,
-                borderRadius: BorderRadius.circular(20)
-              ),
-              child: Icon(Icons.eco, color: Colors.black.withOpacity(0.1), size: birim * 0.15),
+                  color: kartRengi,
+                  borderRadius: BorderRadius.circular(20)),
+              child: Icon(Icons.eco,
+                  color: Colors.black.withOpacity(0.1), size: birim * 0.15),
             ),
           ),
           const SizedBox(height: 10),
-          
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 4.0),
             child: Text(

@@ -17,7 +17,8 @@ class _UreticiProfilEkraniState extends State<UreticiProfilEkrani> {
 
   // Controllerlar
   final TextEditingController _adSoyadController = TextEditingController();
-  final TextEditingController _ciftlikBilgisiController = TextEditingController();
+  final TextEditingController _ciftlikBilgisiController =
+      TextEditingController();
   final TextEditingController _hakkimdaController = TextEditingController();
   final TextEditingController _konumController = TextEditingController();
 
@@ -46,7 +47,7 @@ class _UreticiProfilEkraniState extends State<UreticiProfilEkrani> {
   Widget _buildBackground() {
     return Stack(
       children: [
-        Container(color: const Color.fromARGB(255, 215, 244, 255)),
+        Container(color: Color.fromARGB(255, 228, 242, 247)),
         Positioned.fill(
           child: Image.asset(
             'assets/inekler.png',
@@ -77,7 +78,9 @@ class _UreticiProfilEkraniState extends State<UreticiProfilEkrani> {
             ),
             padding: EdgeInsets.only(
               bottom: MediaQuery.of(context).viewInsets.bottom,
-              left: 24, right: 24, top: 24,
+              left: 24,
+              right: 24,
+              top: 24,
             ),
             child: SingleChildScrollView(
               controller: scrollController,
@@ -88,35 +91,63 @@ class _UreticiProfilEkraniState extends State<UreticiProfilEkrani> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Center(
-                      child: Container(width: 40, height: 4, decoration: BoxDecoration(color: Colors.grey[300], borderRadius: BorderRadius.circular(10))),
+                      child: Container(
+                          width: 40,
+                          height: 4,
+                          decoration: BoxDecoration(
+                              color: Colors.grey[300],
+                              borderRadius: BorderRadius.circular(10))),
                     ),
                     const SizedBox(height: 20),
-                    const Text("Profili Düzenle", style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Color(0xFF1E201C))),
+                    const Text("Profili Düzenle",
+                        style: TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF1E201C))),
                     const SizedBox(height: 25),
                     _buildInput(_adSoyadController, "Ad Soyad", Icons.person),
                     const SizedBox(height: 15),
-                    _buildInput(_ciftlikBilgisiController, "Çiftlik İsmi", Icons.agriculture),
+                    _buildInput(_ciftlikBilgisiController, "Çiftlik İsmi",
+                        Icons.agriculture),
                     const SizedBox(height: 15),
                     _buildInput(_konumController, "Konum", Icons.location_on),
                     const SizedBox(height: 15),
-                    _buildInput(_hakkimdaController, "Hakkımda", Icons.description, maxLines: 3),
+                    _buildInput(_hakkimdaController, "Hakkımda",
+                        Icons.description,
+                        maxLines: 3),
                     const SizedBox(height: 30),
-                    ElevatedButton(
-                      onPressed: _isSaving ? null : () async {
-                        if (_formKey.currentState!.validate()) {
-                          setState(() => _isSaving = true);
-                          await FirebaseFirestore.instance.collection('kullanicilar').doc(user!.uid).update({
-                            'adSoyad': _adSoyadController.text,
-                            'ciftlikBilgisi': _ciftlikBilgisiController.text,
-                            'hakkimda': _hakkimdaController.text,
-                            'konum': _konumController.text,
-                          });
-                          setState(() => _isSaving = false);
-                          if (mounted) Navigator.pop(context);
-                        }
-                      },
-                      style: ElevatedButton.styleFrom(backgroundColor: const Color.fromARGB(255, 0, 0, 0), minimumSize: const Size(double.infinity, 55), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30))),
-                      child: _isSaving ? const CircularProgressIndicator(color: Colors.white) : const Text("Kaydet", style: TextStyle(color: Colors.white, fontSize: 16)),
+                    Center(
+                      child: ElevatedButton(
+                        onPressed: _isSaving
+                            ? null
+                            : () async {
+                                if (_formKey.currentState!.validate()) {
+                                  setState(() => _isSaving = true);
+                                  await FirebaseFirestore.instance
+                                      .collection('kullanicilar')
+                                      .doc(user!.uid)
+                                      .update({
+                                    'adSoyad': _adSoyadController.text,
+                                    'ciftlikBilgisi':
+                                        _ciftlikBilgisiController.text,
+                                    'hakkimda': _hakkimdaController.text,
+                                    'konum': _konumController.text,
+                                  });
+                                  setState(() => _isSaving = false);
+                                  if (mounted) Navigator.pop(context);
+                                }
+                              },
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color.fromARGB(255, 0, 0, 0),
+                            minimumSize: const Size(45, 55),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30))),
+                        child: _isSaving
+                            ? const CircularProgressIndicator(color: Colors.white)
+                            : const Text("Kaydet",
+                                style:
+                                    TextStyle(color: Colors.white, fontSize: 18)),
+                      ),
                     ),
                     const SizedBox(height: 30),
                   ],
@@ -129,17 +160,24 @@ class _UreticiProfilEkraniState extends State<UreticiProfilEkrani> {
     );
   }
 
-  Widget _buildInput(TextEditingController controller, String label, IconData icon, {int maxLines = 1}) {
+  Widget _buildInput(
+      TextEditingController controller, String label, IconData icon,
+      {int maxLines = 1}) {
     return TextFormField(
       controller: controller,
       maxLines: maxLines,
       decoration: InputDecoration(
         labelText: label,
-        prefixIcon: Icon(icon, color: const Color.fromARGB(255, 70, 70, 70)),
+        prefixIcon:
+            Icon(icon, color: const Color.fromARGB(255, 70, 70, 70)),
         filled: true,
         fillColor: Colors.grey.shade100,
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(15), borderSide: BorderSide.none),
-        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(15), borderSide: const BorderSide(color: Color(0xFF2D5A27))),
+        border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(15),
+            borderSide: BorderSide.none),
+        focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(15),
+            borderSide: const BorderSide(color: Color(0xFF2D5A27))),
       ),
     );
   }
@@ -157,30 +195,46 @@ class _UreticiProfilEkraniState extends State<UreticiProfilEkrani> {
         Scaffold(
           backgroundColor: Colors.transparent,
           body: StreamBuilder<DocumentSnapshot>(
-            stream: FirebaseFirestore.instance.collection('kullanicilar').doc(user?.uid).snapshots(),
+            stream: FirebaseFirestore.instance
+                .collection('kullanicilar')
+                .doc(user?.uid)
+                .snapshots(),
             builder: (context, snapshot) {
-              if (!snapshot.hasData) return const Center(child: CircularProgressIndicator());
+              if (!snapshot.hasData)
+                return const Center(child: CircularProgressIndicator());
 
               var data = snapshot.data!.data() as Map<String, dynamic>?;
               String adSoyad = data?['adSoyad'] ?? "İsimsiz Üretici";
-              String ciftlik = data?['ciftlikBilgisi'] ?? "Çiftlik Bilgisi Yok";
-              String hakkimda = data?['hakkimda'] ?? "Henüz bilgi girilmemiş.";
+              String ciftlik =
+                  data?['ciftlikBilgisi'] ?? "Çiftlik Bilgisi Yok";
+              String hakkimda =
+                  data?['hakkimda'] ?? "Henüz bilgi girilmemiş.";
               String konum = data?['konum'] ?? "Konum Yok";
 
-              if (_adSoyadController.text.isEmpty) _adSoyadController.text = adSoyad;
-              if (_ciftlikBilgisiController.text.isEmpty) _ciftlikBilgisiController.text = ciftlik;
-              if (_hakkimdaController.text.isEmpty) _hakkimdaController.text = hakkimda;
-              if (_konumController.text.isEmpty) _konumController.text = konum;
+              if (_adSoyadController.text.isEmpty)
+                _adSoyadController.text = adSoyad;
+              if (_ciftlikBilgisiController.text.isEmpty)
+                _ciftlikBilgisiController.text = ciftlik;
+              if (_hakkimdaController.text.isEmpty)
+                _hakkimdaController.text = hakkimda;
+              if (_konumController.text.isEmpty)
+                _konumController.text = konum;
 
               return CustomScrollView(
+                physics: const BouncingScrollPhysics(
+                    parent: AlwaysScrollableScrollPhysics()),
                 slivers: [
                   SliverAppBar(
-                    expandedHeight: size.height * 0.53,
+                    stretch: true,
+                    expandedHeight: size.height * 0.10,
                     pinned: false,
                     backgroundColor: Colors.transparent,
                     elevation: 0,
                     systemOverlayStyle: SystemUiOverlayStyle.dark,
-                    flexibleSpace: FlexibleSpaceBar(background: Container(color: Colors.transparent)),
+                    flexibleSpace: FlexibleSpaceBar(
+                      stretchModes: const [StretchMode.zoomBackground],
+                      background: Container(color: Colors.transparent),
+                    ),
                   ),
                   SliverToBoxAdapter(
                     child: Stack(
@@ -188,93 +242,182 @@ class _UreticiProfilEkraniState extends State<UreticiProfilEkrani> {
                       children: [
                         Container(
                           margin: EdgeInsets.only(top: avatarDiameter / 2),
-                          constraints: BoxConstraints(minHeight: size.height * 0.7),
+                          constraints:
+                              BoxConstraints(minHeight: size.height * 0.7),
                           decoration: const BoxDecoration(
                             color: Colors.white,
-                            borderRadius: BorderRadius.vertical(top: Radius.circular(40)),
-                            boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 20, offset: Offset(0, -5))],
+                            borderRadius:
+                                BorderRadius.vertical(top: Radius.circular(40)),
                           ),
                           child: Padding(
-                            padding: EdgeInsets.fromLTRB(contentPadding, 24, contentPadding, 100),
+                            padding: EdgeInsets.fromLTRB(
+                                contentPadding, 24, contentPadding, 0),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 SizedBox(height: (avatarDiameter / 2) + 5),
-                                Text(adSoyad, style: const TextStyle(fontSize: 23, fontWeight: FontWeight.bold, color: Color(0xFF1E201C))),
+                                Text(adSoyad,
+                                    style: const TextStyle(
+                                        fontSize: 23,
+                                        fontWeight: FontWeight.bold,
+                                        color: Color(0xFF1E201C))),
                                 const SizedBox(height: 2),
-                                Text(ciftlik, style: TextStyle(fontSize: 15, color: Colors.grey.shade600)),
+                                Text(ciftlik,
+                                    style: TextStyle(
+                                        fontSize: 15,
+                                        color: Colors.grey.shade600)),
                                 const SizedBox(height: 12),
                                 Container(
-                                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                                  decoration: BoxDecoration(color: const Color.fromARGB(255, 30, 77, 24).withOpacity(0.1), borderRadius: BorderRadius.circular(20)),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 12, vertical: 6),
+                                  decoration: BoxDecoration(
+                                      color: const Color.fromARGB(
+                                              255, 30, 77, 24)
+                                          .withOpacity(0.1),
+                                      borderRadius: BorderRadius.circular(20)),
                                   child: Row(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
-                                      const Icon(Icons.location_on, size: 14, color: Color(0xFF2D5A27)),
+                                      const Icon(Icons.location_on,
+                                          size: 14, color: Color(0xFF2D5A27)),
                                       const SizedBox(width: 4),
-                                      Flexible(child: Text(konum, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Color(0xFF2D5A27)), overflow: TextOverflow.ellipsis)),
+                                      Flexible(
+                                          child: Text(konum,
+                                              style: const TextStyle(
+                                                  fontSize: 13,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Color(0xFF2D5A27)),
+                                              overflow: TextOverflow.ellipsis)),
                                     ],
                                   ),
                                 ),
                                 const SizedBox(height: 25),
-                                Text("Hakkımda", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.grey.shade800)),
+                                Text("Hakkımda",
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.grey.shade800)),
                                 const SizedBox(height: 5),
-                                Text(hakkimda, style: TextStyle(color: Colors.grey.shade600, height: 1.5), textAlign: TextAlign.left),
+                                Text(hakkimda,
+                                    style: TextStyle(
+                                        color: Colors.grey.shade600,
+                                        height: 1.5),
+                                    textAlign: TextAlign.left),
                                 const SizedBox(height: 25),
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
                                   children: [
-                                    _buildStatItem("Ürünler", "12"),
+                                    // SADECE BU KISIM DEĞİŞTİ: Ürün sayısını veritabanından çekiyor
+                                    StreamBuilder<QuerySnapshot>(
+                                      stream: FirebaseFirestore.instance
+                                          .collection('urunler')
+                                          .where('ureticiId',
+                                              isEqualTo: user?.uid)
+                                          .snapshots(),
+                                      builder: (context, snapshot) {
+                                        String urunSayisi = "0";
+                                        if (snapshot.hasData) {
+                                          urunSayisi = snapshot.data!.docs.length.toString();
+                                        }
+                                        return _buildStatItem("Ürünler", urunSayisi);
+                                      },
+                                    ),
                                     _buildStatItem("Takipçi", "1.2k"),
                                     _buildStatItem("Puan", "4.8"),
                                   ],
                                 ),
                                 const SizedBox(height: 25),
-                                
+
                                 // --- ÜRÜNLER LİSTESİ ---
-                                Text("Ürünlerim", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.grey.shade800)),
+                                Text("Ürünlerim",
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.grey.shade800)),
                                 const SizedBox(height: 15),
                                 SizedBox(
                                   // Boyutu dikey karta (Image + Text) göre ayarladık
-                                  height: birim * 0.45, 
+                                  height: birim * 0.45,
                                   child: StreamBuilder<QuerySnapshot>(
-                                    stream: FirebaseFirestore.instance.collection('urunler').where('ureticiId', isEqualTo: user?.uid).snapshots(),
+                                    stream: FirebaseFirestore.instance
+                                        .collection('urunler')
+                                        .where('ureticiId',
+                                            isEqualTo: user?.uid)
+                                        .snapshots(),
                                     builder: (context, snapshot) {
-                                      if (!snapshot.hasData) return const Center(child: CircularProgressIndicator());
-                                      if (snapshot.data!.docs.isEmpty) return Center(child: Text("Henüz ürün yok.", style: TextStyle(color: Colors.grey.shade500)));
+                                      if (!snapshot.hasData)
+                                        return const Center(
+                                            child: CircularProgressIndicator());
+                                      if (snapshot.data!.docs.isEmpty)
+                                        return Center(
+                                            child: Text("Henüz ürün yok.",
+                                                style: TextStyle(
+                                                    color:
+                                                        Colors.grey.shade500)));
 
                                       return ListView.builder(
                                         scrollDirection: Axis.horizontal,
                                         itemCount: snapshot.data!.docs.length,
                                         itemBuilder: (context, index) {
-                                          var urun = snapshot.data!.docs[index].data() as Map<String, dynamic>;
-                                          return _buildProductCard(urun, index, birim);
+                                          var urun = snapshot.data!.docs[index]
+                                                  .data()
+                                              as Map<String, dynamic>;
+                                          return _buildProductCard(
+                                              urun, index, birim);
                                         },
                                       );
                                     },
                                   ),
                                 ),
+                                // İçeriğin sonuna biraz boşluk
+                                const SizedBox(height: 50),
                               ],
                             ),
                           ),
                         ),
                         Positioned(
-                          top: 0, left: contentPadding,
+                          top: 0,
+                          left: contentPadding,
                           child: Container(
-                            decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: const Color.fromARGB(255, 255, 255, 255), width: 6)),
-                            child: CircleAvatar(radius: avatarDiameter / 2, backgroundColor: Colors.grey.shade200, backgroundImage: const AssetImage('assets/uretici.png')),
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                    color: const Color.fromARGB(
+                                        255, 255, 255, 255),
+                                    width: 6)),
+                            child: CircleAvatar(
+                                radius: avatarDiameter / 2,
+                                backgroundColor: Colors.grey.shade200,
+                                backgroundImage:
+                                    const AssetImage('assets/uretici.png')),
                           ),
                         ),
                         Positioned(
-                          top: (avatarDiameter / 2) + 20, right: contentPadding,
+                          top: (avatarDiameter / 2) + 20,
+                          right: contentPadding,
                           child: InkWell(
                             onTap: _showEditSheet,
                             borderRadius: BorderRadius.circular(12),
-                            child: Padding(padding: const EdgeInsets.all(3.0), child: Text("Profili düzenle", style: TextStyle(color: const Color.fromARGB(255, 0, 0, 0), fontWeight: FontWeight.w400, fontSize: 15))),
+                            child: Padding(
+                                padding: const EdgeInsets.all(3.0),
+                                child: Text("Profili düzenle",
+                                    style: TextStyle(
+                                        color: const Color.fromARGB(
+                                            255, 0, 0, 0),
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 15))),
                           ),
                         ),
                       ],
                     ),
+                  ),
+
+                  // SliverFillRemaining
+                  SliverFillRemaining(
+                    hasScrollBody: false,
+                    fillOverscroll: true,
+                    child: Container(color: Colors.white),
                   ),
                 ],
               );
@@ -287,19 +430,35 @@ class _UreticiProfilEkraniState extends State<UreticiProfilEkrani> {
 
   Widget _buildStatItem(String label, String value) {
     return Container(
-      width: 90, padding: const EdgeInsets.symmetric(vertical: 15),
-      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(20), border: Border.all(color: const Color.fromARGB(255, 146, 193, 231))),
-      child: Column(children: [Text(value, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Color.fromARGB(255, 146, 193, 231))), const SizedBox(height: 4), Text(label, style: TextStyle(fontSize: 14, color: Color.fromARGB(255, 146, 193, 231)))]),
+      width: 90,
+      padding: const EdgeInsets.symmetric(vertical: 15),
+      decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+          border:
+              Border.all(color: const Color.fromARGB(255, 146, 193, 231))),
+      child: Column(children: [
+        Text(value,
+            style: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Color.fromARGB(255, 0, 0, 0))),
+        const SizedBox(height: 4),
+        Text(label,
+            style: TextStyle(
+                fontSize: 14, color: Color.fromARGB(255, 0, 0, 0)))
+      ]),
     );
   }
 
   // --- SADELEŞTİRİLMİŞ ÜRÜN KARTI (Sadece Görsel ve İsim) ---
-  Widget _buildProductCard(Map<String, dynamic> urun, int index, double birim) {
+  Widget _buildProductCard(
+      Map<String, dynamic> urun, int index, double birim) {
     Color kartRengi = _temaRenkleri[index % _temaRenkleri.length];
 
     return Container(
       // Genişlik diğer karttaki görsel boyutuna yakın ayarlandı
-      width: birim * 0.28, 
+      width: birim * 0.28,
       margin: const EdgeInsets.only(right: 15),
       child: Column(
         children: [
@@ -308,18 +467,21 @@ class _UreticiProfilEkraniState extends State<UreticiProfilEkrani> {
             aspectRatio: 1.0,
             child: Container(
               decoration: BoxDecoration(
-                color: kartRengi,
-                borderRadius: BorderRadius.circular(25),
-                // UrunlerEkrani'ndaki aynı gölge efekti
-                boxShadow: [
-                  BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10, offset: const Offset(0, 4))
-                ]
-              ),
-              child: Icon(Icons.eco, color: Colors.black.withOpacity(0.1), size: birim * 0.15),
+                  color: kartRengi,
+                  borderRadius: BorderRadius.circular(25),
+                  // UrunlerEkrani'ndaki aynı gölge efekti (görsel için kaldırılmadı çünkü kartın içinde)
+                  boxShadow: [
+                    BoxShadow(
+                        color: Colors.black.withOpacity(0.05),
+                        blurRadius: 10,
+                        offset: const Offset(0, 4))
+                  ]),
+              child: Icon(Icons.eco,
+                  color: Colors.black.withOpacity(0.1), size: birim * 0.15),
             ),
           ),
           const SizedBox(height: 10),
-          
+
           // 2. Sadece Ürün İsmi
           Text(
             urun['urunAdi'] ?? "",
