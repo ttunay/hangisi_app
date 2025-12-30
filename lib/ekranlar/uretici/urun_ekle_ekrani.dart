@@ -91,7 +91,7 @@ class _UrunEkleEkraniState extends State<UrunEkleEkrani> {
     return Stack(
       children: [
         // 1. Gri Zemin
-        Container(color: Color.fromARGB(255, 215, 244, 255)), //ZEMİN RENGİ
+        Container(color: Color.fromARGB(255, 228, 242, 247)), //ZEMİN RENGİ
 
         // 2. İnekler Resmi
         Positioned.fill(
@@ -99,16 +99,6 @@ class _UrunEkleEkraniState extends State<UrunEkleEkrani> {
             'assets/inekler.png',
             fit: BoxFit.cover,
             errorBuilder: (_, __, ___) => const SizedBox(),
-          ),
-        ),
-
-        // 3. Buzlu Cam (Glassmorphism)
-        Positioned.fill(
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5), // Hafif blur
-            child: Container(
-              color: Colors.white.withOpacity(0.35), // Hafif beyaz perde
-            ),
           ),
         ),
       ],

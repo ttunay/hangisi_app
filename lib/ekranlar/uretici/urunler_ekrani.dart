@@ -23,20 +23,12 @@ class _UrunlerEkraniState extends State<UrunlerEkrani> {
   Widget _buildBackground() {
     return Stack(
       children: [
-        Container(color: Color.fromARGB(255, 215, 244, 255)), //ZEMİN RENGİİİİİİİİİİİİ
+        Container(color: Color.fromARGB(255, 228, 242, 247)), //ZEMİN RENGİİİİİİİİİİİİ
         Positioned.fill(
           child: Image.asset(
             'assets/inekler.png',
             fit: BoxFit.cover,
             errorBuilder: (_, __, ___) => const SizedBox(),
-          ),
-        ),
-        Positioned.fill(
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-            child: Container(
-              color: Colors.white.withOpacity(0.35),
-            ),
           ),
         ),
       ],

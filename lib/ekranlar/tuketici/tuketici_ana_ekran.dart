@@ -12,7 +12,7 @@ class TuketiciAnaEkran extends StatefulWidget {
 }
 
 class _TuketiciAnaEkranState extends State<TuketiciAnaEkran> {
-  int _seciliSekme = 0;
+  int _seciliSekme = 1;
 
   final List<Widget> _sayfalar = [
     const KesfetEkrani(),         
@@ -71,7 +71,7 @@ class _TuketiciAnaEkranState extends State<TuketiciAnaEkran> {
 
     return Scaffold(
       extendBody: true,
-      backgroundColor: const Color(0xFFE7E9E8),
+      backgroundColor: Color.fromARGB(255, 228, 242, 247),
       body: IndexedStack(index: _seciliSekme, children: _sayfalar),
       bottomNavigationBar: _buildFloatingNavBar(birim),
     );
@@ -115,7 +115,7 @@ class _TuketiciAnaEkranState extends State<TuketiciAnaEkran> {
         padding: EdgeInsets.all(birim * 0.025), 
         decoration: BoxDecoration(
           color: isSelected ? Colors.white.withOpacity(0.1) : Colors.transparent, 
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(30),
         ),
         child: Icon(
           isSelected ? activeIcon : icon, 
