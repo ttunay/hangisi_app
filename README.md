@@ -1,5 +1,6 @@
 # Mobil Proglama Final Ödevi
 
+
 # 🐮 Hangisi - Güvenilir Gıda Takip Uygulaması
 
 **Hangisi**, üreticiler ve tüketiciler arasında şeffaf bir köprü kurmayı amaçlayan, Mobil Programlama dersi için geliştirilmiş kapsamlı bir Flutter projesidir. Üreticilerin tarımsal ürünlerini tohum, gübre, ilaçlama bilgileriyle birlikte kaydedebildiği, tüketicilerin ise bu ürünleri şeffaf bir şekilde görüntüleyebildiği bir platformdur.
@@ -19,7 +20,6 @@
   <img src="assets/ekran_goruntuleri/8.png" width="200" alt="Tüketici Profil Ekranı">
   <img src="assets/ekran_goruntuleri/9.png" width="200" alt="Tüketici Ürün Keşfetme Ekranı">
   <img src="assets/ekran_goruntuleri/10.png" width="200" alt="Tüketici Ürün Detay Paneli">
-
 </p>
 
 
