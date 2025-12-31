@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart'; // Firebase Çekirdeği
 import 'package:hangisi_app/ekranlar/acilis/splash_screen.dart';
-import 'firebase_options.dart'; // Az önce terminalin oluşturduğu dosya
+import 'firebase/firebase_options.dart'; // Az önce terminalin oluşturduğu dosya
 
 void main() async {
   // Motoru Hazırla
