@@ -82,9 +82,9 @@ class _TuketiciProfilEkraniState extends State<TuketiciProfilEkrani> {
       backgroundColor: Colors.transparent,
       builder: (sheetContext) {
         return DraggableScrollableSheet(
-          initialChildSize: 0.45,
-          minChildSize: 0.40,
-          maxChildSize: 0.45,
+          initialChildSize: 0.50,
+          minChildSize: 0.45,
+          maxChildSize: 0.50,
           expand: false,
           builder: (context, scrollController) {
             return Container(

@@ -36,3 +36,4 @@ flutter:
   # Sadece klasör adını yazmak yeterlidir, içindekileri otomatik görür.
   assets:
     - assets/
+   

@@ -1,7 +1,7 @@
 # Mobil Proglama Final Ödevi
 
 
-# 🐮 Hangisi - Güvenilir Gıda Takip Uygulaması
+# 🐮 Güvenilir Gıda Takip Uygulaması - hangisi 
 
 **Hangisi**, üreticiler ve tüketiciler arasında şeffaf bir köprü kurmayı amaçlayan, Mobil Programlama dersi için geliştirilmiş kapsamlı bir Flutter projesidir. Üreticilerin tarımsal ürünlerini tohum, gübre, ilaçlama bilgileriyle birlikte kaydedebildiği, tüketicilerin ise bu ürünleri şeffaf bir şekilde görüntüleyebildiği bir platformdur.
 
@@ -9,17 +9,17 @@
 ## 📱 Ekran Görüntüleri
 
 <p align="center">
-  <img src="assets/ekran_goruntuleri/0.png" width="200" alt="Splash Screen">
-  <img src="assets/ekran_goruntuleri/1.png" width="200" alt="Giriş Ekranı">
-  <img src="assets/ekran_goruntuleri/2.png" width="200" alt="Kayıt Ekranı">
-  <img src="assets/ekran_goruntuleri/3.png" width="200" alt="Doğrulama Ekranı">
-  <img src="assets/ekran_goruntuleri/4.png" width="200" alt="Üretici Profil Ekranı">
-  <img src="assets/ekran_goruntuleri/5.png" width="200" alt="Üretici Ürün Ekleme Ekranı">
-  <img src="assets/ekran_goruntuleri/6.png" width="200" alt="Üretici Ürünler Ekranı">
-  <img src="assets/ekran_goruntuleri/7.png" width="200" alt="Ürün Düzenleme Paneli">
-  <img src="assets/ekran_goruntuleri/8.png" width="200" alt="Tüketici Profil Ekranı">
-  <img src="assets/ekran_goruntuleri/9.png" width="200" alt="Tüketici Ürün Keşfetme Ekranı">
-  <img src="assets/ekran_goruntuleri/10.png" width="200" alt="Tüketici Ürün Detay Paneli">
+  <img src="assets/ekran_goruntuleri/0.png" width="200">
+  <img src="assets/ekran_goruntuleri/1.png" width="200">
+  <img src="assets/ekran_goruntuleri/2.png" width="200">
+  <img src="assets/ekran_goruntuleri/3.png" width="200">
+  <img src="assets/ekran_goruntuleri/4.png" width="200">
+  <img src="assets/ekran_goruntuleri/5.png" width="200">
+  <img src="assets/ekran_goruntuleri/6.png" width="200">
+  <img src="assets/ekran_goruntuleri/7.png" width="200">
+  <img src="assets/ekran_goruntuleri/8.png" width="200">
+  <img src="assets/ekran_goruntuleri/9.png" width="200">
+  <img src="assets/ekran_goruntuleri/10.png" width="200">
 </p>
 
 
@@ -53,4 +53,4 @@
 * **Cloud Firestore:** Gerçek zamanlı veritabanı (Kullanıcılar ve Ürünler için).
 * **Firebase Core:** Firebase entegrasyonu.
 
-*Geliştirici: [Asena Tunay Temur]*
+*Geliştirici: Asena Tunay Temur*

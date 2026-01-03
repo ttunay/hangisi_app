@@ -38,12 +38,15 @@ class _AnaEkranState extends State<AnaEkran> {
       context: context,
       builder: (dialogContext) => AlertDialog(
         title: const Text("Çıkış Yap"),
-        content: const Text("Çıkış yapmak istediğinize emin misiniz?"),
+        content: const Text(
+          "Çıkış yapmak istediğinize emin misiniz?"),
         actions: [
           // Vazgeç: sadece dialog kapanır
           TextButton(
             onPressed: () => Navigator.pop(dialogContext),
-            child: const Text("Vazgeç"),
+            child: const Text(
+              "Vazgeç", 
+              style: TextStyle(color: Color.fromARGB(255, 0, 0, 0), fontSize: 17)),
           ),
 
           // Çıkış: signOut + yönlendirme
@@ -64,7 +67,7 @@ class _AnaEkranState extends State<AnaEkran> {
             },
             child: const Text(
               "Çıkış",
-              style: TextStyle(color: Colors.red),
+              style: TextStyle(color: Colors.red, fontSize: 17),
             ),
           ),
         ],

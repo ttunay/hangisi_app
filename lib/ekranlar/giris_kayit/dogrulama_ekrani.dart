@@ -240,7 +240,7 @@ class _DogrulamaEkraniState extends State<DogrulamaEkrani> {
                                         "Doğrulandıktan sonra otomatik olarak yönlendirileceksiniz.",
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
-                                          fontSize: birim * 0.025,
+                                          fontSize: birim * 0.030,
                                           color: Colors.black38,
                                         ),
                                       ),
@@ -253,7 +253,7 @@ class _DogrulamaEkraniState extends State<DogrulamaEkrani> {
                                           "Vazgeç",
                                           style: TextStyle(
                                             color: Colors.black87,
-                                            fontSize: birim * 0.035,
+                                            fontSize: birim * 0.040,
                                             fontWeight: FontWeight.w600,
                                           ),
                                         ),

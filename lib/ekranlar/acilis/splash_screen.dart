@@ -66,7 +66,7 @@ class _SplashScreenState extends State<SplashScreen> {
             // quarterTurns: 1 => 90°, 2 => 180°, 3 => 270°
             quarterTurns: isLandscape ? 3 : 0,
             child: Image.asset(
-              'assets/splash_arkaplan.png',
+              'assets/desen.png',
               fit: BoxFit.cover, // tüm ekranı kaplasın, taşan yerler kırpılır
               // Görsel bulunamazsa hata yerine boş bir widget göster.
               errorBuilder: (_, __, ___) => const SizedBox(),
