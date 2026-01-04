@@ -38,10 +38,10 @@ class _AnaEkranState extends State<AnaEkran> {
       builder: (dialogContext) => AlertDialog(
         backgroundColor: const Color.fromARGB(255, 255, 255, 255),
         title: const Text("Çıkış Yap"),
-content: const Text(
-  "Çıkış yapmak istediğinize emin misiniz?",
-  style: TextStyle(fontSize: 17), // Sadece boyut eklendi
-),
+        content: const Text(
+          "Çıkış yapmak istediğinize emin misiniz?",
+          style: TextStyle(fontSize: 17),
+        ),
           
         actions: [
           // Vazgeç: sadece dialog kapanır
