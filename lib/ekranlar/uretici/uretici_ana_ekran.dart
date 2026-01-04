@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:ui'; // ImageFilter.blur için
-
 import 'package:hangisi_app/ekranlar/giris_kayit/giris_ekrani.dart';
 import 'package:hangisi_app/ekranlar/uretici/uretici_profil_ekrani.dart';
 import 'package:hangisi_app/ekranlar/uretici/urun_ekle_ekrani.dart';
@@ -37,16 +36,20 @@ class _AnaEkranState extends State<AnaEkran> {
     showDialog(
       context: context,
       builder: (dialogContext) => AlertDialog(
+        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
         title: const Text("Çıkış Yap"),
-        content: const Text(
-          "Çıkış yapmak istediğinize emin misiniz?"),
+content: const Text(
+  "Çıkış yapmak istediğinize emin misiniz?",
+  style: TextStyle(fontSize: 17), // Sadece boyut eklendi
+),
+          
         actions: [
           // Vazgeç: sadece dialog kapanır
           TextButton(
             onPressed: () => Navigator.pop(dialogContext),
             child: const Text(
               "Vazgeç", 
-              style: TextStyle(color: Color.fromARGB(255, 0, 0, 0), fontSize: 17)),
+              style: TextStyle(color: Color.fromARGB(255, 0, 0, 0), fontSize: 16)),
           ),
 
           // Çıkış: signOut + yönlendirme
@@ -67,7 +70,7 @@ class _AnaEkranState extends State<AnaEkran> {
             },
             child: const Text(
               "Çıkış",
-              style: TextStyle(color: Colors.red, fontSize: 17),
+              style: TextStyle(color: Colors.red, fontSize: 16),
             ),
           ),
         ],

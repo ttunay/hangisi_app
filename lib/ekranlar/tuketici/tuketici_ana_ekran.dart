@@ -30,13 +30,16 @@ class _TuketiciAnaEkranState extends State<TuketiciAnaEkran> {
       barrierDismissible: false, // Dışarı tıklayınca kapanmasın
       builder: (dialogContext) => AlertDialog(
         title: const Text("Çıkış Yap"),
-        content: const Text("Çıkış yapmak istediğinize emin misiniz?"),
+        content: const Text(
+          "Çıkış yapmak istediğinize emin misiniz?",
+          style: TextStyle(fontSize: 17),
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(dialogContext),
             child: const Text(
               "Vazgeç",
-              style: TextStyle(color: Color.fromARGB(255, 0, 0, 0), fontSize: 17)),
+              style: TextStyle(color: Color.fromARGB(255, 0, 0, 0), fontSize: 16)),
           ),
           TextButton(
             onPressed: () async {
@@ -60,7 +63,7 @@ class _TuketiciAnaEkranState extends State<TuketiciAnaEkran> {
             },
             child: const Text(
               "Çıkış",
-              style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold, fontSize: 17),
+              style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold, fontSize: 16),
             ),
           ),
         ],
